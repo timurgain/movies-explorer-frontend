@@ -1,10 +1,14 @@
-import './Header.css';
+import "./Header.css";
+import LogoPath from "../../images/logo_app.svg";
+import Navigation from "../Navigation/Navigation"
 
 function Header() {
   return (
-    <h1 className='header'>Hi there</h1>
-  )
+    <header className="header">
+      <img className="header__logo" src={LogoPath} alt="Logo Movie Explorer" />
+      <Navigation />
+    </header>
+  );
 }
 
-
-export default Header
+export default Header;
