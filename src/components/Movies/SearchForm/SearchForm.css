@@ -4,10 +4,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  min-height: 72px;
-  background-color: rgb(249, 249, 249);
   border-radius: 9px;
-  padding: 0 30px 0 15px;
   margin: 70px 0;
 }
 
@@ -19,6 +16,19 @@
   width: 100%;
   border-bottom: 1px solid rgb(232, 232, 232);
 
+}
+
+.search__field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 72px;
+  background-color: rgb(249, 249, 249);
+  border-top-left-radius: 9px;
+  border-bottom-left-radius: 9px;
+  padding: 0 0 0 15px;
+  flex-grow: 1;
 }
 
 .search__icon {
@@ -60,7 +70,11 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
+  transition: opacity .2s linear;
+}
 
+.search__submit:hover {
+  opacity: .6;
 }
 
 .search__submit::after {
@@ -76,12 +90,16 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  column-gap: 14px;
   align-items: center;
   justify-content: flex-end;
   width: 170px;
   cursor: pointer;
   margin: 0 0 0 auto;
+  min-height: 72px;
+  background-color: rgb(249, 249, 249);
+  border-top-right-radius: 9px;
+  border-bottom-right-radius: 9px;
+  padding: 0 30px 0 0;
 }
 
 .search__checkbox_type_functional {
@@ -94,10 +112,15 @@
 
 .search__checkbox_type_visible {
   position: absolute;
-  top: 0;
+  top: auto;
   left: 0;
   min-width: 36px;
   min-height: 20px;
+  transition: opacity .2s linear;
+}
+
+.search__checkbox_type_visible:hover {
+  opacity: .6;
 }
 
 .search__checkbox_type_functional ~ .search__checkbox_type_visible {
@@ -118,12 +141,44 @@
 
 @media screen and (max-width: 767px) {
 
+  .search::after {
+    top: 181px;
+  }
+
+  .search {
+    flex-wrap: wrap;
+    row-gap: 20px;
+    justify-content: center;
+  }
+
   .search__icon {
     display: none;
   }
 
+  .search__submit {
+    margin: 0 0 0 46px;
+  }
+
   .search__submit::after {
     display: none;
+  }
+
+  .search__field {
+    padding: 0 15px 0;
+    border-radius: 9px;
+    width: 100%;
+  }
+
+  .search__text {
+    margin: 0;
+  }
+
+  .search__checkbox{
+    margin: 0;
+    min-height: 72px;
+    background-color: rgba(249, 249, 249, 0);
+    border-radius: 0;
+    padding: 0;
   }
 
 }
