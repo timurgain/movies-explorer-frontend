@@ -1,9 +1,9 @@
 import './App.css';
-import Header from '../Header/Header'
+import Movies from '../Movies/Movies';
 
 function App() {
   return (
-    <Header />
+    <Movies />
   );
 }
 

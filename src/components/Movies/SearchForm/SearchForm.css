@@ -1,0 +1,129 @@
+.search {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 72px;
+  background-color: rgb(249, 249, 249);
+  border-radius: 9px;
+  padding: 0 30px 0 15px;
+  margin: 70px 0;
+}
+
+.search::after {
+  content: '';
+  position: absolute;
+  top: 140px;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgb(232, 232, 232);
+
+}
+
+.search__icon {
+  min-width: 34px;
+  min-height: 34px;
+  transform: rotateZ(45deg);
+}
+
+.search__text {
+  margin: 0 0 0 10px;
+  border: none;
+  background-color: rgb(249, 249, 249);
+  min-width: 20%;
+  flex-grow: 9;
+}
+
+.search__text:focus {
+  outline: none;
+  border-bottom: 1px solid rgb(232, 232, 232);
+  box-sizing: border-box;
+  height: 34px;
+}
+
+.search__text::placeholder {
+  border: none;
+  font-size: 18px;
+  line-height: 1.11;
+}
+
+.search__submit {
+  margin: 0 60px 0 46px;
+  position: relative;
+  height: 34px;
+  min-width: 34px;
+  background-image: url('../../../images/search_submit.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: orange;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+
+}
+
+.search__submit::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 64px;
+  border-left: 1px solid rgb(232, 232, 232);
+  height: 40px;
+}
+
+.search__checkbox {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  column-gap: 14px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 170px;
+  cursor: pointer;
+  margin: 0 0 0 auto;
+}
+
+.search__checkbox_type_functional {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(0 0 0 0);
+}
+
+.search__checkbox_type_visible {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 36px;
+  min-height: 20px;
+}
+
+.search__checkbox_type_functional ~ .search__checkbox_type_visible {
+  background-image: url('../../../images/search_tumb-off.svg');
+  transition: background-image .1s linear;
+}
+
+.search__checkbox_type_functional:checked ~ .search__checkbox_type_visible {
+  background-image: url('../../../images/search_tumb-on.svg');
+}
+
+.search__checkbox-label {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.38;
+}
+
+
+@media screen and (max-width: 767px) {
+
+  .search__icon {
+    display: none;
+  }
+
+  .search__submit::after {
+    display: none;
+  }
+
+}
