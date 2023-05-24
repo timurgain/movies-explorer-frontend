@@ -1,9 +1,18 @@
-import './App.css';
-import Movies from '../Movies/Movies';
+import React from "react";
+import "./App.css";
+import {
+  MoviesDataContext,
+  defaultMoviesData,
+} from "../../contexts/MoviesDataContext";
+import Movies from "../Movies/Movies";
 
 function App() {
+  const [moviesData, setMoviesData] = React.useState(defaultMoviesData);
+
   return (
-    <Movies />
+    <MoviesDataContext.Provider value={moviesData}>
+      <Movies />
+    </MoviesDataContext.Provider>
   );
 }
 
