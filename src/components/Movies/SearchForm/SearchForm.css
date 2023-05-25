@@ -140,16 +140,28 @@
 }
 
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .search {
+    margin: 70px 0 120px 0;
+  }
 
   .search::after {
-    top: 181px;
+    top: 180px;
   }
+}
+
+
+@media screen and (max-width: 767px) {
 
   .search {
     flex-wrap: wrap;
     row-gap: 20px;
     justify-content: center;
+    margin: 70px 0 15px 0;
+  }
+
+  .search::after {
+    top: 181px;
   }
 
   .search__icon {

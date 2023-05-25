@@ -16,8 +16,24 @@
 }
 
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .main {
+    padding: 70px 0 0 0;
+  }
+
   .main__list {
     grid-template-columns: repeat(2, minmax(1%, 1fr));
+    row-gap: 47px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main {
+    padding: 50px 0 0 0;
+  }
+
+  .main__list {
+    grid-template-columns: 100%;
+    row-gap: 39px;
   }
 }

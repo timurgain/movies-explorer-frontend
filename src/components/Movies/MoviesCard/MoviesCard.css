@@ -90,3 +90,18 @@
   color: rgb(160, 160, 160);
   background-color: rgb(249, 249, 249);
 }
+
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+
+}
+
+
+@media screen and (max-width: 767px) {
+
+  .card__header {
+    font-size: 12px;
+    line-height: 1.1;
+
+  }
+}
