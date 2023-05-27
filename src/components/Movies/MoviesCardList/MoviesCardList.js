@@ -18,31 +18,15 @@ function MoviesCardList({ movies, ...props }) {
       tablet: { initial: 8, more: 2 },
       mobile: { initial: 5, more: 2 },
     };
-
-    function isRequiredPaginationBtn() {
-      return moviesData.length - toShow > 0 ? true : false;
-    }
-
     function calcToShow(device) {
       return toShowConfig[device].initial + toShowConfig[device].more * page;
     }
 
-    function paginationController() {
-      if (isRequiredPaginationBtn(device)) {
-        setIsPaginationBtn(true);
-        return;
-      }
-      setIsPaginationBtn(false);
-    }
+    moviesData.length > toShow ? setIsPaginationBtn(true) : setIsPaginationBtn(false);
 
-    function toShowController() {
-      if (device === "desktop") setToShow(calcToShow("desktop"));
-      if (device === "tablet") setToShow(calcToShow("tablet"));
-      if (device === "mobile") setToShow(calcToShow("mobile"));
-    }
-
-    toShowController();
-    paginationController();
+    if (device === "desktop") setToShow(calcToShow("desktop"));
+    if (device === "tablet") setToShow(calcToShow("tablet"));
+    if (device === "mobile") setToShow(calcToShow("mobile"));
   }, [device, moviesData, page, toShow]);
 
   function renderMovies(toShow) {

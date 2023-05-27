@@ -6,6 +6,7 @@ import {
 } from "../../contexts/MoviesDataContext";
 import { DeviceContext, enumWindowWidth } from "../../contexts/DeviceContext";
 import Movies from "../Movies/Movies";
+import Footer from "../Footer/Footer";
 
 function App() {
   const [moviesData, setMoviesData] = React.useState(defaultMoviesData);
@@ -31,7 +32,12 @@ function App() {
     <DeviceContext.Provider value={device}>
       <MoviesDataContext.Provider value={moviesData}>
 
-        <Movies />
+        <div className="app">
+
+          <Movies />
+
+        </div>
+        <Footer/>
 
       </MoviesDataContext.Provider>
     </DeviceContext.Provider>

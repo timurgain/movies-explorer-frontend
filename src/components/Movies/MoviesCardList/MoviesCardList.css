@@ -27,6 +27,13 @@
   display: block;
   padding: 0;
   margin: 50px auto 80px;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity .2s linear;
+}
+
+.main__pagination-btn:hover {
+  opacity: .6;
 }
 
 
@@ -47,4 +54,9 @@
     grid-template-columns: 100%;
     row-gap: 39px;
   }
+
+  .main__pagination-btn {
+    width: 82.7%;
+  }
+
 }
