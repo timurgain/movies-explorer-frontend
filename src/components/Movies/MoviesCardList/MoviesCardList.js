@@ -3,6 +3,7 @@ import { MoviesDataContext } from "../../../contexts/MoviesDataContext";
 import { DeviceContext } from "../../../contexts/DeviceContext";
 import "./MoviesCardList.css";
 import MoviesCard from "../MoviesCard/MoviesCard";
+import Preloader from "../../Preloader/Preloader";
 
 function MoviesCardList({ movies, ...props }) {
   const moviesData = React.useContext(MoviesDataContext);
@@ -11,6 +12,7 @@ function MoviesCardList({ movies, ...props }) {
   const [isPaginationBtn, setIsPaginationBtn] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [toShow, setToShow] = React.useState(0);
+  const [isPreloader, setIsPreloader] = React.useState(false);
 
   React.useEffect(() => {
     const toShowConfig = {
@@ -22,7 +24,9 @@ function MoviesCardList({ movies, ...props }) {
       return toShowConfig[device].initial + toShowConfig[device].more * page;
     }
 
-    moviesData.length > toShow ? setIsPaginationBtn(true) : setIsPaginationBtn(false);
+    moviesData.length > toShow
+      ? setIsPaginationBtn(true)
+      : setIsPaginationBtn(false);
 
     if (device === "desktop") setToShow(calcToShow("desktop"));
     if (device === "tablet") setToShow(calcToShow("tablet"));
@@ -40,17 +44,26 @@ function MoviesCardList({ movies, ...props }) {
   }
 
   function handleClickLoadMore() {
-    setPage(page + 1);
+    setIsPaginationBtn(false);
+    setIsPreloader(true);
+    setTimeout(() => {
+      setIsPreloader(false);
+      setPage(page + 1);
+    }, 1000)
+
   }
 
   return (
     <main className="main">
       <ul className="main__list">{renderMovies(toShow)}</ul>
+
       {isPaginationBtn && (
         <button className="main__pagination-btn" onClick={handleClickLoadMore}>
           Ещё
         </button>
       )}
+      {isPreloader && <Preloader />}
+
     </main>
   );
 }
