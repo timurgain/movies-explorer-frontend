@@ -1,14 +1,19 @@
+import './Movies.css';
 import React from "react";
-import Header from "../Header/Header";
+import Header from "../Header/Header"
 import SearchForm from "./SearchForm/SearchForm";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
+import Footer from "../Footer/Footer";
 
 function Movies() {
   return (
     <>
-      <Header />
-      <SearchForm />
-      <MoviesCardList />
+      <Header/>
+      <div className="movies">
+        <SearchForm />
+        <MoviesCardList />
+      </div>
+      <Footer/>
     </>
   );
 }

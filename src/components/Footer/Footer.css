@@ -1,11 +1,8 @@
 .footer {
   height: 172px;
   background-color: rgb(250, 250, 250);
-  font-family: 'Inter', Arial, sans-serif;
-  font-style: normal;
   font-size: 13px;
   line-height: 1.21;
-  padding: 0 4.3% 0;
 }
 
 .footer__content {
@@ -16,7 +13,8 @@
   justify-content: center;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 79px 0 0 0;
+  padding: 79px 4.3% 0 4.3%;
+  box-sizing: border-box;
 }
 
 .footer__paragraph {

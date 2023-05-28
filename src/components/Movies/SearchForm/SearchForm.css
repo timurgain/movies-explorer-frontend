@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: flex-start;
   border-radius: 9px;
-  margin: 70px 0;
+  margin: 0 0 70px 0;
 }
 
 .search::after {
@@ -142,7 +142,7 @@
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .search {
-    margin: 70px 0 120px 0;
+    margin: 0 0 120px 0;
   }
 
   .search::after {
@@ -157,7 +157,7 @@
     flex-wrap: wrap;
     row-gap: 20px;
     justify-content: center;
-    margin: 70px 0 15px 0;
+    margin: 0 0 15px 0;
   }
 
   .search::after {

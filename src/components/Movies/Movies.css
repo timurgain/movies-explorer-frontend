@@ -1,0 +1,10 @@
+.movies {
+  background-color: rgb(255, 255, 255);
+  margin: 0 auto;
+  padding: 70px 4.3% 0;
+  box-sizing: border-box;
+  max-width: 1280px;
+  min-width: 320px;
+  min-height: 40vh;
+}
+
