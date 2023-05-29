@@ -1,4 +1,12 @@
 .header {
+  background-color: rgb(255, 255, 255);
+}
+
+.header_type_promo {
+  background-color: rgb(70, 93, 255);
+}
+
+.header__container {
   position: relative;
   display: flex;
   flex-direction: row;

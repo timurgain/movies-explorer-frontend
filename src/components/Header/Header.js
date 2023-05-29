@@ -4,28 +4,38 @@ import { DeviceContext } from "../../contexts/DeviceContext";
 import LogoPath from "../../images/logo_app.svg";
 import Navigation from "../Navigation/Navigation";
 
-
-function Header() {
-
+function Header({ ...props }) {
+  const isPromo = props.type === "promo" ? true : false;
   const device = React.useContext(DeviceContext);
-  const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false)
-
+  const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
   function handleClickToggleMenu() {
-    setIsMobileMenuOpened(!isMobileMenuOpened)
+    setIsMobileMenuOpened(!isMobileMenuOpened);
   }
 
   return (
-    <header className="header">
-      <img className="header__logo" src={LogoPath} alt="Logo Movie Explorer" />
+    <header className={`header ${isPromo ? "header_type_promo" : ""}`}>
+      <div className="header__container">
+        <img
+          className="header__logo"
+          src={LogoPath}
+          alt="Logo Movie Explorer"
+        />
 
-      {(device === 'mobile' || device === 'tablet')
-        ? <button className="header__menu-btn" onClick={handleClickToggleMenu} />
-        : <Navigation isMobile={false}/>}
+        {isPromo &&
+          <Navigation isPromo={true} />}
 
-      {(device === 'mobile' || device === 'tablet') && isMobileMenuOpened
-        && <Navigation isMobile={true} onClose={handleClickToggleMenu}/>}
+        {device === "desktop" && !isPromo &&
+          <Navigation isMobile={false} />}
 
+        {(device === "mobile" || device === "tablet") && !isPromo && (
+          <button className="header__menu-btn" onClick={handleClickToggleMenu}/>
+        )}
+
+        {(device === "mobile" || device === "tablet") && isMobileMenuOpened && (
+          <Navigation isMobile={true} onClose={handleClickToggleMenu} />
+        )}
+      </div>
     </header>
   );
 }

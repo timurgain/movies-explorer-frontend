@@ -1,9 +1,14 @@
 import './Main.css';
+import Header from '../Header/Header';
+import Promo from './Promo/Promo';
 
 
 function Main() {
   return (
-    <p>Main page</p>
+    <>
+      <Header type={'promo'}/>
+      <Promo />
+    </>
   )
 }
 

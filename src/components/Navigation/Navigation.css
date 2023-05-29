@@ -8,6 +8,30 @@
   padding: 0;
 }
 
+.nav__register {
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.33;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 1);
+}
+
+.nav__login {
+  text-decoration: none;
+  font-size: 12px;
+  line-height: 1.33;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(43, 224, 128, 1);
+  border-radius: 3px;
+  width: 76px;
+  height: 32px;
+
+}
+
 .nav__close-btn {
   position: absolute;
   top: 22px;
@@ -39,6 +63,11 @@
   margin: 0;
   padding: 0;
   line-height: .7;
+}
+
+.nav__menu_type_promo {
+  justify-content: flex-end;
+  column-gap: 30px;
 }
 
 .nav__btn {
@@ -86,7 +115,7 @@
 
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-  .nav {
+  .nav_type_mobile {
     position: absolute;
     z-index: 1;
     display: flex;
@@ -98,7 +127,7 @@
     padding: 15vh 0 8vh 0;
   }
 
-  .nav__menu {
+  .nav__menu_type_mobile {
     flex-direction: column;
     row-gap: 28px;
     justify-content: space-between;
@@ -120,7 +149,7 @@
 }
 
 @media screen and (max-width: 767px) {
-  .nav {
+  .nav_type_mobile {
     position: absolute;
     z-index: 1;
     display: flex;
@@ -132,13 +161,25 @@
     padding: 18vh 0 6vh 0;
   }
 
-  .nav__menu {
+  .nav__menu_type_mobile {
     flex-direction: column;
     row-gap: 24px;
     justify-content: space-between;
     align-items: center;
     height: 100%;
     padding: 0;
+  }
+
+  .nav__menu_type_promo {
+    column-gap: 14px;
+  }
+
+  .nav__register {
+    font-size: 12px;
+  }
+
+  .nav__login {
+    font-size: 12px;
   }
 
   .nav__item_type_profile {
