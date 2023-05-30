@@ -1,0 +1,134 @@
+.techs {
+  background-color: rgb(245, 245, 245);
+}
+
+.techs__container {
+  margin: 0 auto;
+  padding: 110px 4.3%;
+  box-sizing: border-box;
+  max-width: 1280px;
+  height: 625px;
+}
+
+.techs__title {
+  position: relative;
+  font-size: 22px;
+  line-height: 1.22;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin: 0 0 106px 0;
+}
+
+.techs__title::after {
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.techs__subtitle {
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 1.16;
+  text-align: center;
+  letter-spacing: -0.04em;
+  margin: 0 0 26px 0;
+}
+
+.techs__description {
+  font-size: 14px;
+  line-height: 1.43;
+  text-align: center;
+  letter-spacing: -0.04em;
+  max-width: 36%;
+  margin: 0 auto 100px;
+}
+
+.techs__list {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  max-width: 690px;
+}
+
+.techs__item {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 60px;
+  text-align: center;
+  letter-spacing: -0.04em;
+  width: 90px;
+  height: 60px;
+  background-color: rgb(232, 232, 232);
+  border-radius: 10px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .techs__title {
+    margin: 0 0 104px 0;
+  }
+
+  .techs__container {
+    margin: 0 auto;
+    padding: 90px 4.3%;
+    height: 567px;
+  }
+
+  .techs__description {
+    font-size: 12px;
+    max-width: 60%;
+    margin: 0 auto 83px;
+  }
+
+  .techs__item {
+    font-size: 12px;
+    width: 87px;
+    height: 57px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .techs {
+    background-color: rgb(255, 255, 255);
+  }
+
+  .techs__title {
+    font-size: 18px;
+    margin: 0 0 89px 0;
+  }
+
+  .techs__subtitle {
+    font-size: 30px;
+    margin: 0 0 24px 0;
+  }
+
+  .techs__container {
+    margin: 0 auto;
+    padding: 70px 4.3%;
+    height: 651px;
+  }
+
+  .techs__description {
+    font-size: 11px;
+    max-width: 92%;
+    margin: 0 auto 50px;
+  }
+
+  .techs__list {
+    max-width: 61.5%;
+    row-gap: 10px;
+  }
+
+  .techs__item {
+    font-size: 12px;
+    width: 84px;
+    height: 57px;
+  }
+}
