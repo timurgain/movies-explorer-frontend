@@ -1,0 +1,134 @@
+.about {
+  background-color: rgb(255, 255, 255);
+}
+
+.about__container {
+  margin: 0 auto;
+  padding: 110px 4.3%;
+  box-sizing: border-box;
+  max-width: 1280px;
+  height: 608px;
+}
+
+.about__title {
+  position: relative;
+  font-size: 22px;
+  line-height: 1.22;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin: 0 0 94px 0;
+}
+
+.about__title::after {
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  border-bottom: 1px solid rgb(0, 0, 0);
+}
+
+.about__content {
+  display: flex;
+  flex-direction: row;
+  column-gap: 40px;
+  justify-content: space-between;
+  list-style: none;
+  margin: 0 0 110px 0;
+  padding: 0;
+}
+
+.about__item {
+  display: flex;
+  flex-direction: column;
+  row-gap: 26px;
+  max-width: 550px;
+}
+
+.about__fact {
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.about__description {
+  font-size: 14px;
+  line-height: 1.43;
+  margin: 0;
+}
+
+.about__graph {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 36px 36px;
+  justify-items: center;
+  align-items: center;
+}
+
+.about__term {
+  display: block;
+  text-align: center;
+  line-height: 36px;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  background-color: rgb(242, 242, 242);
+}
+
+.about__term_highlighted {
+  background-color: rgb(43, 224, 128);
+}
+
+.about__part {
+  font-size: 14px;
+  line-height: 1.21;
+  color: rgb(160, 160, 160);
+}
+
+
+@media screen and (max-width: 767px) {
+  .about__container {
+    height: 641px;
+    padding: 70px 4.3%;
+  }
+
+  .about__title {
+    font-size: 18px;
+    margin: 0 0 89px 0;
+  }
+
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 56px;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0 0 60px 0;
+    padding: 0;
+  }
+
+  .about__fact {
+    font-size: 18px;
+  }
+
+  .about__description {
+    font-size: 11px;
+  }
+
+  .about__graph {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 35% 65%;
+  }
+
+  .about__term {
+    font-size: 11px;
+  }
+
+  .about__part {
+    font-size: 11px;
+  }
+}
