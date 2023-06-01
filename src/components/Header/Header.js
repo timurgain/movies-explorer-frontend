@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Header.css";
 import { DeviceContext } from "../../contexts/DeviceContext";
 import LogoPath from "../../images/logo_app.svg";
@@ -16,11 +17,14 @@ function Header({ ...props }) {
   return (
     <header className={`header ${isPromo ? "header_type_promo" : ""}`}>
       <div className="header__container">
-        <img
-          className="header__logo"
-          src={LogoPath}
-          alt="Logo Movie Explorer"
-        />
+
+        <Link to='/' className="header__logo">
+          <img
+
+            src={LogoPath}
+            alt="Logo Movie Explorer"
+          />
+        </Link>
 
         {isPromo &&
           <Navigation isPromo={true} />}

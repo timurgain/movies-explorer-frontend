@@ -93,4 +93,8 @@
   .porfolio__link::after {
     font-size: 18px;
   }
+
+  .porfolio__item:not(:last-child)::after {
+    top: 47px;
+  }
 }
