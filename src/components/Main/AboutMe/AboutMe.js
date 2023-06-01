@@ -16,7 +16,7 @@ function AboutMe() {
               онлайн-бизнес. Тогда я и прикоснулся к разработке, начал с backend
               и Python. Затем дополнительно к рабочему опыту, начал и в течение
               двух лет завершил два учебных курса с дедлайнами в
-              Яндекс.Практикум (Django, SQL, REST API, JavaScript, React.js,
+              Яндекс.Практикум (Python, Django, SQL, REST API, JavaScript, React.js,
               Node.js, MongoDB, адаптивная верстка, алгоритмы, тестирование).
             </p>
             <a className="about-me__github" href="https://github.com/timurgain" target="blank">
