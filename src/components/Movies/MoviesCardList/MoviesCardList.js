@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { MoviesDataContext } from "../../../contexts/MoviesDataContext";
 import { DeviceContext } from "../../../contexts/DeviceContext";
 import "./MoviesCardList.css";
@@ -6,13 +7,35 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../../Preloader/Preloader";
 
 function MoviesCardList({ movies, ...props }) {
-  const moviesData = React.useContext(MoviesDataContext);
-  const device = React.useContext(DeviceContext);
+  const pathname = useLocation().pathname;
 
+  const device = React.useContext(DeviceContext);
+  const {
+    moviesData,
+    favoriteMoviesData,
+    handleClickAddToFavoriteMovies,
+    handleClickRemoveFromFavoriteMovies,
+  } = React.useContext(MoviesDataContext);
+
+  const [moviesList, setMoviesLIst] = React.useState([]);
   const [isPaginationBtn, setIsPaginationBtn] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [toShow, setToShow] = React.useState(0);
   const [isPreloader, setIsPreloader] = React.useState(false);
+
+  const handleClickFavorites = useCallback(() => {
+    if (pathname === "/movies") handleClickAddToFavoriteMovies();
+    if (pathname === "/saved-movies") handleClickRemoveFromFavoriteMovies();
+  }, [
+    pathname,
+    handleClickAddToFavoriteMovies,
+    handleClickRemoveFromFavoriteMovies,
+  ]);
+
+  React.useEffect(() => {
+    if (pathname === "/movies") setMoviesLIst(moviesData);
+    if (pathname === "/saved-movies") setMoviesLIst(favoriteMoviesData);
+  }, [pathname, moviesData, favoriteMoviesData]);
 
   React.useEffect(() => {
     const toShowConfig = {
@@ -24,20 +47,24 @@ function MoviesCardList({ movies, ...props }) {
       return toShowConfig[device].initial + toShowConfig[device].more * page;
     }
 
-    moviesData.length > toShow
+    moviesList.length > toShow
       ? setIsPaginationBtn(true)
       : setIsPaginationBtn(false);
 
     if (device === "desktop") setToShow(calcToShow("desktop"));
     if (device === "tablet") setToShow(calcToShow("tablet"));
     if (device === "mobile") setToShow(calcToShow("mobile"));
-  }, [device, moviesData, page, toShow]);
+  }, [device, moviesList, page, toShow]);
 
   function renderMovies(toShow) {
-    return moviesData.slice(0, toShow).map((movie) => {
+    return moviesList.slice(0, toShow).map((movie) => {
       return (
         <li key={movie.movieId}>
-          <MoviesCard movie={movie} />
+          <MoviesCard
+            movie={movie}
+            onClickHandler={handleClickFavorites}
+            pathname={pathname}
+          />
         </li>
       );
     });
@@ -49,8 +76,7 @@ function MoviesCardList({ movies, ...props }) {
     setTimeout(() => {
       setIsPreloader(false);
       setPage(page + 1);
-    }, 1000)
-
+    }, 1000);
   }
 
   return (
@@ -63,7 +89,6 @@ function MoviesCardList({ movies, ...props }) {
         </button>
       )}
       {isPreloader && <Preloader />}
-
     </main>
   );
 }

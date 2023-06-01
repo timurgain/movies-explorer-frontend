@@ -1,24 +1,32 @@
 import React from "react";
 import "./MoviesCard.css";
 
-function MoviesCard({ movie, ...props }) {
-  const [isSaved, setIfSaved] = React.useState(false);
-  function handleBtnClick() {
-    setIfSaved(!isSaved);
+function MoviesCard({ movie, onClickHandler, pathname, ...props }) {
+
+
+  const [isFavorite, setIsFavorite] = React.useState(false);
+
+  function handleClickFavorite() {
+    setIsFavorite(!isFavorite);
+    onClickHandler();
   }
 
   return (
     <figure className="card">
       <img className="card__image" src={movie.image} alt={movie.nameRU} />
 
-      {!isSaved && (
-        <button className="card__save-btn" onClick={handleBtnClick}>
+      {pathname === '/movies' && !isFavorite && (
+        <button className="card__save-btn" onClick={handleClickFavorite}>
           Сохранить
         </button>
       )}
 
-      {isSaved && (
-        <button className="card__mark-btn" onClick={handleBtnClick} />
+      {pathname === '/movies' && isFavorite && (
+        <button className="card__mark-btn" onClick={handleClickFavorite} />
+      )}
+
+      {pathname === '/saved-movies' && (
+        <button className="card__remove-btn" onClick={handleClickFavorite} />
       )}
 
       <figcaption className="card__caption">
