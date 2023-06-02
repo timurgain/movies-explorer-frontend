@@ -7,6 +7,8 @@ import Navigation from "../Navigation/Navigation";
 
 function Header({ ...props }) {
   const isPromo = props.type === "promo" ? true : false;
+  const isAuth = props.type === "auth" ? true : false;
+
   const device = React.useContext(DeviceContext);
   const [isMobileMenuOpened, setIsMobileMenuOpened] = React.useState(false);
 
@@ -16,29 +18,26 @@ function Header({ ...props }) {
 
   return (
     <header className={`header ${isPromo ? "header_type_promo" : ""}`}>
-      <div className="header__container">
+      <div className={`header__container ${isAuth ? "header__container_type_auth" : ""}`}>
 
-        <Link to='/' className="header__logo">
-          <img
-
-            src={LogoPath}
-            alt="Logo Movie Explorer"
-          />
+        <Link to="/" className="header__logo">
+          <img src={LogoPath} alt="Logo Movie Explorer" />
         </Link>
 
         {isPromo &&
           <Navigation isPromo={true} />}
 
-        {device === "desktop" && !isPromo &&
+        {(device === "desktop") && (!isPromo && !isAuth) &&
           <Navigation isMobile={false} />}
 
-        {(device === "mobile" || device === "tablet") && !isPromo && (
-          <button className="header__menu-btn" onClick={handleClickToggleMenu}/>
-        )}
-
-        {(device === "mobile" || device === "tablet") && isMobileMenuOpened && (
+        {(device === "mobile" || device === "tablet") && isMobileMenuOpened &&
           <Navigation isMobile={true} onClose={handleClickToggleMenu} />
-        )}
+        }
+
+        {(device === "mobile" || device === "tablet") && (!isPromo && !isAuth) &&
+          <button className="header__menu-btn" onClick={handleClickToggleMenu} />
+        }
+
       </div>
     </header>
   );

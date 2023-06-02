@@ -14,12 +14,17 @@
   align-items: center;
   font-size: 24px;
   min-height: 74px;
-
   margin: 0 auto;
   padding: 0 4.3% 0;
   box-sizing: border-box;
   max-width: 1280px;
-  /* min-width: 320px; */
+}
+
+.header__container_type_auth {
+  padding: 0;
+  max-width: 396px;
+  min-height: 108px;
+  align-items: flex-end;
 }
 
 .header__logo {
@@ -43,4 +48,17 @@
 
 .header__menu-btn:hover {
   opacity: .6
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .header__container_type_auth {
+    min-height: 270px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .header__container_type_auth {
+    min-height: 94px;
+    justify-content: center;
+  }
 }

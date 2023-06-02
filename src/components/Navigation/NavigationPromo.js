@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Navigation.css";
 
 function NavigationPromo() {
@@ -6,11 +7,11 @@ function NavigationPromo() {
       <ul className="nav__menu nav__menu_type_promo">
 
         <li className="nav__item">
-          <a className="nav__register" href="/">Регистрация</a>
+          <Link to="/signup" className="nav__register">Регистрация</Link>
         </li>
 
         <li className="nav__item">
-          <a className="nav__login" href="/">Войти</a>
+          <Link to="/signin" className="nav__login" href="/">Войти</Link>
         </li>
 
       </ul>
