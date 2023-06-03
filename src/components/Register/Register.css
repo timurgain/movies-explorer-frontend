@@ -22,6 +22,26 @@
   margin: 0 0 40px 0;
 }
 
+.register__footnote {
+  align-self: center;
+  margin: 16px 0 0 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.21;
+  color: rgb(160, 160, 160);
+}
+
+.register__link {
+  text-decoration: none;
+  color: rgba(255, 104, 56, 1);
+  cursor: pointer;
+  transition: color .2s linear;
+}
+
+.register__link:hover {
+  color: rgba(255, 104, 56, .6);
+}
+
 @media screen and (min-width: 768px) and (max-width: 1023px) {
   .register__container {
     padding: 236px 0 269px 0;
@@ -39,5 +59,9 @@
     padding: 70px 9.3% 40px;
     min-height: 706px;
     align-items: center;
+  }
+
+  .register__footnote {
+    font-size: 12px;
   }
 }

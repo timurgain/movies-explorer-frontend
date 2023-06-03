@@ -50,7 +50,7 @@ function AuthForm({ submitText, onSubmit, isRegister, ...props }) {
           value={values.password}
           type="password"
           name="password"
-          minLength={2}
+          minLength={4}
           required
         />
       </label>
