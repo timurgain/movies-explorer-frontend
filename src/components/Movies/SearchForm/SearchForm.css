@@ -86,6 +86,10 @@
   height: 40px;
 }
 
+.search__submit:focus {
+  outline: 1px solid rgb(232, 232, 232);
+}
+
 .search__checkbox {
   position: relative;
   display: flex;
@@ -130,6 +134,11 @@
 
 .search__checkbox_type_functional:checked ~ .search__checkbox_type_visible {
   background-image: url('../../../images/search_tumb-on.svg');
+}
+
+.search__checkbox_type_functional:focus ~ .search__checkbox_type_visible {
+  outline: 1px solid rgb(232, 232, 232);
+  border-radius: 20px;
 }
 
 .search__checkbox-label {
