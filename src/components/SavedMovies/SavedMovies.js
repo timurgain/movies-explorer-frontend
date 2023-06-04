@@ -7,7 +7,7 @@ import Footer from "../Footer/Footer";
 function SavedMovies() {
   return (
     <>
-      <Header/>
+      <Header displayNav={true} />
       <div className="movies">
         <SearchForm />
         <MoviesCardList />

@@ -2,29 +2,27 @@ import React from "react";
 import "./Profile.css";
 import Header from "../Header/Header";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+import useFormAndValidation from "../../hooks/useFormAndValidation";
 
-function Profile() {
+function Profile({onSubmit, ...props}) {
   const currentUser = React.useContext(CurrentUserContext);
+  const { values, errors, isValid, handleChange, resetForm } =
+    useFormAndValidation({name: currentUser.name, email: currentUser.email}, {}, false);
 
-  const [values, setValues] = React.useState({
-    name: currentUser.name,
-    email: currentUser.email,
-  });
-
-  function handleChange(evt) {
-    const { name, value } = evt.target;
-    setValues({ ...values, [name]: value });
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    onSubmit();
   }
 
   return (
     <>
-      <Header />
+      <Header displayNav={true} />
 
       <div className="profile">
         <section className="profile__container">
-          <h2 className="profile__title">{`Привет, ${values.name}!`}</h2>
+          <h2 className="profile__title">{`Привет, ${currentUser.name}!`}</h2>
 
-          <form className="profile__form" action="">
+          <form className="profile__form" onSubmit={handleSubmit}>
             <label className="profile__field">
               <span className="profile__label">Имя</span>
               <input
@@ -33,8 +31,10 @@ function Profile() {
                 value={values.name}
                 type="text"
                 name="name"
+                minLength={2}
                 required
               />
+              <span className="profile__error">{errors["name"]}</span>
             </label>
 
             <label className="profile__field">
@@ -47,11 +47,13 @@ function Profile() {
                 name="email"
                 required
               />
+              <span className="profile__error">{errors["email"]}</span>
             </label>
 
             <button
               className="profile__btn profile__btn_type_submit"
               type="submit"
+              disabled={isValid ? false : true}
             >
               Редактировать
             </button>

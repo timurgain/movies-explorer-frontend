@@ -1,18 +1,18 @@
+import React from "react";
 import "./Navigation.css";
 import NavigationCore from "./NavigationCore";
+import Popup from "../Popup/Popup";
 
-function NavigationMobile({ onClose, ...props }) {
+function NavigationMobile({ isPopupOpen, ...props }) {
+
   return (
-    <div className="popup">
+    <Popup isOpen={isPopupOpen} >
       <nav className="nav nav_type_mobile">
-        <button className="nav__close-btn" onClick={onClose} />
         <ul className="nav__menu nav__menu_type_mobile">
-
           <NavigationCore isSideMenu={true} />
-
         </ul>
       </nav>
-    </div>
+    </Popup>
   );
 }
 

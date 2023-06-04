@@ -7,6 +7,7 @@
 }
 
 .auth__field {
+  position: relative;
   max-width: 100%;
   display: flex;
   flex-direction: column;
@@ -21,7 +22,6 @@
   font-size: 10px;
   line-height: 1.2;
   color: rgba(160, 160, 160, 1);
-
 }
 
 .auth__input{
@@ -42,6 +42,11 @@
   background-color: rgb(250, 250, 250);
 }
 
+.auth__input_type_error {
+  color: rgba(238, 52, 101);
+
+}
+
 .auth__submit {
   padding: 0;
   margin: auto 0 0 0;
@@ -60,6 +65,25 @@
 
 .auth__submit:hover {
   opacity: .6;
+}
+
+.auth__submit:disabled {
+  cursor:not-allowed;
+}
+
+.auth__error {
+  max-width: 100%;
+  color: rgb(238, 52, 101);
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  top: 70px;
+  left: 0;
+  /* visibility: hidden; */
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {

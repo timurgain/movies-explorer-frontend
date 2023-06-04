@@ -4,16 +4,16 @@ import './Login.css';
 import Header from '../Header/Header';
 import AuthForm from '../AuthForm/AuthForm';
 
-function Login() {
+function Login({onSubmit, ...props}) {
   return (
     <>
-      <Header type={'auth'} />
+      <Header displayNav={false} typeAuth={true} />
 
       <div className="login">
         <section className="login__container">
           <h2 className="login__title">Рады видеть!</h2>
 
-          <AuthForm submitText={'Войти'} isRegister={false} />
+          <AuthForm submitText={'Войти'} onSubmit={onSubmit} isNameField={false} />
 
           <p className="login__footnote">
             Ещё не зарегистрированы?{" "}

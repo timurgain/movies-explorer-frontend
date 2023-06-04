@@ -8,7 +8,7 @@ import Footer from "../Footer/Footer";
 function Movies() {
   return (
     <>
-      <Header/>
+      <Header displayNav={true} />
       <div className="movies">
         <SearchForm />
         <MoviesCardList />

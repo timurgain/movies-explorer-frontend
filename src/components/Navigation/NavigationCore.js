@@ -47,14 +47,6 @@ function NavigationCore({ isSideMenu, ...props }) {
         </Link>
       </li>
 
-
-
-      {/* <li className="nav__item nav__item_type_profile">
-        <button className="nav__btn nav__btn_type_profile">
-          <img src={iconProfilePath} alt="Profile icon" />
-          Аккаунт
-        </button>
-      </li> */}
     </>
   );
 }
