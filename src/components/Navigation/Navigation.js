@@ -1,7 +1,7 @@
 import "./Navigation.css";
 import React from "react";
 import { DeviceContext } from "../../contexts/DeviceContext";
-import PopupContext from "../../contexts/PopupContext";
+import PopupNavContext from "../../contexts/PopupNavContext";
 import NavigationPromo from "./NavigationPromo";
 import NavigationDesktop from "./NavigationDesktop";
 import NavigationMobile from "./NavigationMobile";
@@ -9,13 +9,13 @@ import NavigationMobile from "./NavigationMobile";
 function Navigation({ isHeaderPromo, onClose, ...props }) {
 
   const device = React.useContext(DeviceContext);
-  const {isPopupOpen, setIsPopupOpen} = React.useContext(PopupContext);
+  const {isPopupNavOpen, setIsPopupNavOpen} = React.useContext(PopupNavContext);
 
   const [isCompact, setIsCompact] = React.useState(true);
 
   React.useEffect(() => {
-    setIsPopupOpen(false)
-  },[setIsPopupOpen])
+    setIsPopupNavOpen(false)
+  },[setIsPopupNavOpen])
 
   React.useEffect(() => {
     if (device === "desktop") setIsCompact(false);
@@ -24,7 +24,7 @@ function Navigation({ isHeaderPromo, onClose, ...props }) {
 
 
   function handleClickOpenPopupMenu() {
-    setIsPopupOpen(true);
+    setIsPopupNavOpen(true);
   }
 
   return (
@@ -39,7 +39,7 @@ function Navigation({ isHeaderPromo, onClose, ...props }) {
         <button className="header__menu-btn" onClick={handleClickOpenPopupMenu} />
       }
 
-      <NavigationMobile isPopupOpen={isPopupOpen} />
+      <NavigationMobile isPopupNavOpen={isPopupNavOpen} />
     </>
   );
 }
