@@ -84,7 +84,7 @@ function App() {
   function handleSearchMovies(query, isShortMovie) {
     const durationLimit = isShortMovie ? config.shortMovie : Infinity;
     const strippedQuery = query
-      .replace(config.regEx.punctuation, "")
+      .replace(config.regExp.punctuation, "")
       .toLowerCase();
     const key = query + durationLimit.toString();
 
@@ -96,10 +96,10 @@ function App() {
     moviesApi
       .getMovies()
       .then((movies) => {
-        
+
         const filteredMovies = movies.reduce((result, movie) => {
           const strippedName = movie.nameRU
-            .replace(config.regEx.punctuation, "")
+            .replace(config.regExp.punctuation, "")
             .toLowerCase();
           if (
             strippedName.includes(strippedQuery) &&

@@ -4,8 +4,9 @@ const config = {
     mainUrl: 'http://localhost:3000',
     imageUrl: 'https://api.nomoreparties.co',
   },
-  regEx: {
-    punctuation: /[!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~«»\s]/g
+  regExp: {
+    punctuation: /[!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~«»\s]/g,
+    userNamePattern: "[A-Za-zа-яА-Я \\-]{2,}",
   },
   shortMovie: 40
 };

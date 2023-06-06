@@ -1,5 +1,6 @@
 import React from "react";
 import "./AuthForm.css";
+import config from "../../config";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
@@ -26,10 +27,14 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
             value={values.name}
             type="text"
             name="name"
-            minLength={2}
+            pattern={config.regExp.userNamePattern}
             required
           />
-          <span className="auth__error">{errors["name"]}</span>
+          <span className="auth__error">
+            {errors["name"]
+              ? "Minimum 2 characters. Use only Latin, Cyrillic, spaces, and hyphens."
+              : ""}
+          </span>
         </label>
       )}
 
