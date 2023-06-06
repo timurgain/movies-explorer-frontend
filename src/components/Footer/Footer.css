@@ -1,4 +1,6 @@
 .footer {
+  min-width: 320px;
+  margin: auto 0 0 0;
   height: 172px;
   background-color: rgb(250, 250, 250);
   font-size: 13px;

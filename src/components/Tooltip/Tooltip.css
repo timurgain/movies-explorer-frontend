@@ -7,7 +7,7 @@
   background-color: rgb(249, 249, 249);
   padding: 35px 3% 20px;
   margin: 265px auto;
-  width: 45%;
+  width: 35%;
   height: 150px;
   border-radius: 6px;
   box-sizing: border-box;
@@ -15,7 +15,7 @@
 
 .tooltip__message {
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1.2;
   margin: 0;
 

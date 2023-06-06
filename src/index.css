@@ -12,3 +12,10 @@
   -ms-text-size-adjust: 100%;
   -moz-text-size-adjust: 100%;
 }
+
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  min-height: 100vh;
+}

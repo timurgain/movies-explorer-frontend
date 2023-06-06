@@ -59,7 +59,7 @@ function MoviesCardList({ movies, ...props }) {
   function renderMovies(toShow) {
     return moviesList.slice(0, toShow).map((movie) => {
       return (
-        <li key={movie.movieId}>
+        <li key={movie.id}>
           <MoviesCard
             movie={movie}
             onClickHandler={handleClickFavorites}

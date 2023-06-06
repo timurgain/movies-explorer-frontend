@@ -5,12 +5,12 @@ import SearchForm from "./SearchForm/SearchForm";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 
-function Movies() {
+function Movies({onSearch, ...props}) {
   return (
     <>
       <Header displayNav={true} />
       <div className="movies">
-        <SearchForm />
+        <SearchForm onSearch={onSearch}/>
         <MoviesCardList />
       </div>
       <Footer/>
