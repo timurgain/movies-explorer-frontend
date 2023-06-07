@@ -1,8 +1,9 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import config from "../../config";
 import moviesApi from "../../utils/MoviesApi";
+import mainApi from "../../utils/MainApi";
 import {
   CurrentUserContext,
   defaultCurrentUser,
@@ -25,10 +26,13 @@ import PageNotFound from "../PageNotFound/PageNotFound";
 import Tooltip from "../Tooltip/Tooltip";
 
 function App() {
+  const navigate = useNavigate();
+
   const [moviesData, setMoviesData] = React.useState(defaultMoviesData);
   const [favoriteMoviesData, setFavoriteMoviesData] = React.useState(
     defaultFavoriteMoviesData
   );
+  const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
   const [device, setDevice] = React.useState("tablet");
   const [isPopupNavOpen, setIsPopupNavOpen] = React.useState(false);
@@ -37,7 +41,20 @@ function App() {
 
   const isAnyPopupOpen = isPopupNavOpen || isPopupTooltipOpen;
 
-  // manage popup
+  // Set up the current user and check the jwt
+
+  React.useEffect(() => {
+    mainApi
+      .getUserMe()
+      .then((user) => {
+        setCurrentUser(user);
+        setLoggedIn(true);
+      })
+      .catch(console.log);
+  }, [loggedIn]);
+
+  // Manage popup
+
   React.useEffect(() => {
     function closeAllPopups() {
       setIsPopupNavOpen(false);
@@ -64,7 +81,8 @@ function App() {
     };
   }, [isAnyPopupOpen]);
 
-  // manage resize and device type
+  // Manage resize and device type
+
   React.useEffect(() => {
     function handleResize() {
       if (window.innerWidth >= enumWindowWidth.desktop) {
@@ -80,7 +98,8 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // manage api movie beatfilm
+  // Movie beatfilm API
+
   function handleSearchMovies(query, isShortMovie) {
     const durationLimit = isShortMovie ? config.shortMovie : Infinity;
     const strippedQuery = query
@@ -96,7 +115,6 @@ function App() {
     moviesApi
       .getMovies()
       .then((movies) => {
-
         const filteredMovies = movies.reduce((result, movie) => {
           const strippedName = movie.nameRU
             .replace(config.regExp.punctuation, "")
@@ -116,6 +134,52 @@ function App() {
       .catch(reportError);
   }
 
+  // Auth API
+
+  function handleSubmitRegister({ email, password, name }) {
+    mainApi
+      .postUser(email, password, name)
+      .then((user) => {
+        console.log(user)
+        navigate("/signin", { replace: true });
+        setTooltip({
+          message: `Регистрация прошла успешно!`,
+          btnText: "Здорово",
+        })
+      })
+      .catch((err) => {
+        setTooltip({
+          message: JSON.parse(err.message).message,
+          btnText: "Понятно",
+        });
+      })
+      .finally(() => setIsPopupTooltipOpen(true));
+  }
+
+  function handleSubmitLogin({ email, password }) {
+    mainApi
+      .login(email, password)
+      .then(() => {
+        setLoggedIn(true);
+        navigate("/movies", { replace: true });
+      })
+      .catch((err) => {
+        console.log(err)
+        setTooltip({
+          message: JSON.parse(err.message).message,
+          btnText: "Понятно",
+        });
+        setIsPopupTooltipOpen(true);
+      });
+  }
+
+  function handleSubmitProfile() {
+    // makes api request
+    console.log("API, profile");
+  }
+
+  // Movie favorites API
+
   function handleClickAddToFavoriteMovies() {
     // makes api request
     console.log("API, add");
@@ -125,23 +189,6 @@ function App() {
     // makes api request
     console.log("API, remove");
   }
-
-  function handleSubmitRegister() {
-    // makes api request
-    console.log("API, register");
-  }
-
-  function handleSubmitLogin() {
-    // makes api request
-    console.log("API, login");
-  }
-
-  function handleSubmitProfile() {
-    // makes api request
-    console.log("API, profile");
-  }
-
-
 
   return (
     <>
@@ -192,7 +239,6 @@ function App() {
                   <Route
                     path="*"
                     element={<PageNotFound />} />
-
                 </Routes>
               </MoviesDataContext.Provider>
             </PopupTooltipContex.Provider>

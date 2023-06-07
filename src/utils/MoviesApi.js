@@ -1,5 +1,9 @@
 import config from "../config";
 
+/**
+ * API provides data from BeatFilm service
+ */
+
 class MoviesApi {
   constructor(baseUrl) {
     this._baseUrl = baseUrl;

@@ -11,7 +11,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit();
+    onSubmit(values);
   }
 
   return (
