@@ -11,7 +11,7 @@ class MainApi {
   constructor(baseUrl) {
     this._baseUrl = baseUrl;
     this._options = {
-      credentials: "include",  // send cookie including httpOnly cookies with jwt
+      credentials: "include", // send cookie including httpOnly cookies with jwt
       headers: {
         "Content-type": "application/json; charset=UTF-8",
       },
@@ -20,7 +20,15 @@ class MainApi {
 
   getUserMe() {
     this._options.method = "GET";
-    if ('body' in this._options) delete this._options.body
+    if ("body" in this._options) delete this._options.body;
+    return fetch(`${this._baseUrl}/users/me`, this._options).then(
+      this._responseToJSON
+    );
+  }
+
+  patchUserMe(name, email) {
+    this._options.method = "PATCH";
+    this._options.body = JSON.stringify({ name, email });
     return fetch(`${this._baseUrl}/users/me`, this._options).then(
       this._responseToJSON
     );
@@ -43,7 +51,7 @@ class MainApi {
   }
 
   _responseToJSON(response) {
-    console.log(response)
+    console.log(response);
     if (!response.ok) {
       return response.text().then((text) => {
         throw new Error(text);
@@ -53,7 +61,7 @@ class MainApi {
   }
 
   _responseToResolve(response) {
-    console.log(response)
+    console.log(response);
     if (!response.ok) {
       return response.text().then((text) => {
         throw new Error(text);

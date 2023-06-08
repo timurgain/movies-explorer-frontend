@@ -81,6 +81,14 @@ function App() {
     };
   }, [isAnyPopupOpen]);
 
+  function showTooltip(message, btnText) {
+    setTooltip({
+      message: message,
+      btnText: btnText
+    });
+    setIsPopupTooltipOpen(true)
+  }
+
   // Manage resize and device type
 
   React.useEffect(() => {
@@ -140,20 +148,10 @@ function App() {
     mainApi
       .postUser(email, password, name)
       .then((user) => {
-        console.log(user)
         navigate("/signin", { replace: true });
-        setTooltip({
-          message: `Регистрация прошла успешно!`,
-          btnText: "Здорово",
-        })
+        showTooltip('Регистрация прошла успешно!', 'Здорово')
       })
-      .catch((err) => {
-        setTooltip({
-          message: JSON.parse(err.message).message,
-          btnText: "Понятно",
-        });
-      })
-      .finally(() => setIsPopupTooltipOpen(true));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
   }
 
   function handleSubmitLogin({ email, password }) {
@@ -163,19 +161,17 @@ function App() {
         setLoggedIn(true);
         navigate("/movies", { replace: true });
       })
-      .catch((err) => {
-        console.log(err)
-        setTooltip({
-          message: JSON.parse(err.message).message,
-          btnText: "Понятно",
-        });
-        setIsPopupTooltipOpen(true);
-      });
+      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
   }
 
-  function handleSubmitProfile() {
-    // makes api request
-    console.log("API, profile");
+  function handleSubmitProfile({ name, email }) {
+    mainApi
+      .patchUserMe(name, email)
+      .then((user) => {
+        setCurrentUser(user)
+        showTooltip('Данные обновили успешно!', 'Здорово')
+      })
+      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
   }
 
   // Movie favorites API

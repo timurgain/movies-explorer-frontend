@@ -6,12 +6,16 @@ import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function Profile({onSubmit, ...props}) {
   const currentUser = React.useContext(CurrentUserContext);
-  const { values, errors, isValid, handleChange, resetForm } =
+  const { values, setValues, errors, isValid, handleChange } =
     useFormAndValidation({name: currentUser.name, email: currentUser.email}, {}, false);
+
+  React.useEffect(() => {
+    setValues({name: currentUser.name, email: currentUser.email})
+  }, [currentUser, setValues])
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit();
+    onSubmit(values);
   }
 
   return (
