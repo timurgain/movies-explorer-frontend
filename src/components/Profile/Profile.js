@@ -4,18 +4,27 @@ import Header from "../Header/Header";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
-function Profile({onSubmit, ...props}) {
+function Profile({ onSubmit, onLogout, ...props }) {
   const currentUser = React.useContext(CurrentUserContext);
   const { values, setValues, errors, isValid, handleChange } =
-    useFormAndValidation({name: currentUser.name, email: currentUser.email}, {}, false);
+    useFormAndValidation(
+      { name: currentUser.name, email: currentUser.email },
+      {},
+      false
+    );
 
   React.useEffect(() => {
-    setValues({name: currentUser.name, email: currentUser.email})
-  }, [currentUser, setValues])
+    setValues({ name: currentUser.name, email: currentUser.email });
+  }, [currentUser, setValues]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
     onSubmit(values);
+  }
+
+  function handleLogout(evt) {
+    evt.preventDefault();
+    onLogout();
   }
 
   return (
@@ -63,7 +72,10 @@ function Profile({onSubmit, ...props}) {
             </button>
           </form>
 
-          <button className="profile__btn profile__btn_type_signout">
+          <button
+            className="profile__btn profile__btn_type_signout"
+            onClick={handleLogout}
+          >
             Выйти из аккаунта
           </button>
         </section>

@@ -47,8 +47,8 @@ function App() {
     mainApi
       .getUserMe()
       .then((user) => {
-        setCurrentUser(user);
         setLoggedIn(true);
+        setCurrentUser(user);
       })
       .catch(console.log);
   }, [loggedIn]);
@@ -106,7 +106,7 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Movie beatfilm API
+  // Use Beatfilm API
 
   function handleSearchMovies(query, isShortMovie) {
     const durationLimit = isShortMovie ? config.shortMovie : Infinity;
@@ -142,7 +142,7 @@ function App() {
       .catch(reportError);
   }
 
-  // Auth API
+  // Use main API, register, auth
 
   function handleSubmitRegister({ email, password, name }) {
     mainApi
@@ -174,7 +174,17 @@ function App() {
       .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
   }
 
-  // Movie favorites API
+  function handleLogout() {
+    mainApi
+      .logout()
+      .then(() => {
+        setLoggedIn(false);
+        navigate("/", { replace: true });
+      })
+      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
+  }
+
+  // Use main API, favorite movies
 
   function handleClickAddToFavoriteMovies() {
     // makes api request
@@ -222,7 +232,9 @@ function App() {
                     element={<SavedMovies />} />
                   <Route
                     path="/profile"
-                    element={<Profile onSubmit={handleSubmitProfile} />}
+                    element={<Profile
+                              onSubmit={handleSubmitProfile}
+                              onLogout={handleLogout} />}
                   />
                   <Route
                     path="/signup"

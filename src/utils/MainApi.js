@@ -50,6 +50,14 @@ class MainApi {
     );
   }
 
+  logout() {
+    this._options.method = "POST";
+    if ("body" in this._options) delete this._options.body;
+    return fetch(`${this._baseUrl}/signout`, this._options).then(
+      this._responseToResolve
+    );
+  }
+
   _responseToJSON(response) {
     console.log(response);
     if (!response.ok) {
