@@ -5,7 +5,7 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function Profile({ onSubmit, onLogout, ...props }) {
-  const currentUser = React.useContext(CurrentUserContext);
+  const { currentUser } = React.useContext(CurrentUserContext);
   const { values, setValues, errors, isValid, handleChange } =
     useFormAndValidation(
       { name: currentUser.name, email: currentUser.email },

@@ -1,7 +1,11 @@
+import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
-function ProtectedRoute({ isLoggedIn, ...props }) {
-  return isLoggedIn ? <Outlet /> : <Navigate to="/signin" />;
+function ProtectedRoute({ ...props }) {
+  const { loggedIn } = React.useContext(CurrentUserContext);
+
+  return loggedIn ? <Outlet /> : <Navigate to="/signin" />;
 }
 
 export default ProtectedRoute;

@@ -192,7 +192,7 @@ function App() {
   return (
     <>
       <DeviceContext.Provider value={device}>
-        <CurrentUserContext.Provider value={currentUser}>
+        <CurrentUserContext.Provider value={{loggedIn, currentUser}}>
           <PopupNavContext.Provider
             value={{ isPopupNavOpen, setIsPopupNavOpen }}
           >
@@ -213,6 +213,7 @@ function App() {
                 }}
               >
                 <Routes>
+
                   {/* unprotected routes*/}
                   <Route path="/" element={<Main />} />
                   <Route
@@ -225,7 +226,7 @@ function App() {
                   />
 
                   {/* protected routes */}
-                  <Route element={<ProtectedRoute isLoggedIn={loggedIn} />}>
+                  <Route element={<ProtectedRoute />}>
                     <Route path="/movies" element={<Movies />} />
                     <Route path="/saved-movies" element={<SavedMovies />} />
                     <Route
