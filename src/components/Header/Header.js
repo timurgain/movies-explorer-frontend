@@ -15,7 +15,7 @@ function Header({ displayNav, typeAuth, typePromo, ...props }) {
         </Link>
 
         {displayNav &&
-          <Navigation isHeaderPromo={typePromo} />}
+          <Navigation />}
 
       </div>
     </header>

@@ -1,5 +1,6 @@
 import "./Navigation.css";
 import React from "react";
+import { useLocation } from "react-router-dom";
 import { DeviceContext } from "../../contexts/DeviceContext";
 import PopupNavContext from "../../contexts/PopupNavContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
@@ -7,7 +8,9 @@ import NavigationPromo from "./NavigationPromo";
 import NavigationDesktop from "./NavigationDesktop";
 import NavigationMobile from "./NavigationMobile";
 
-function Navigation({ isHeaderPromo, onClose, ...props }) {
+function Navigation({ onClose, ...props }) {
+  const pathname = useLocation().pathname;
+
   const device = React.useContext(DeviceContext);
   const { loggedIn } = React.useContext(CurrentUserContext);
   const { isPopupNavOpen, setIsPopupNavOpen } =
@@ -28,15 +31,22 @@ function Navigation({ isHeaderPromo, onClose, ...props }) {
     setIsPopupNavOpen(true);
   }
 
+  function getClassMenuBtn() {
+    if (pathname === '/') {
+      return "header__menu-btn header__menu-btn_type_promo"
+    }
+    return "header__menu-btn"
+  }
+
   return (
     <>
-      {isHeaderPromo && <NavigationPromo />}
+      {!loggedIn && <NavigationPromo />}
 
-      {!isHeaderPromo && !isCompact && <NavigationDesktop />}
+      {loggedIn && !isCompact && <NavigationDesktop />}
 
-      {isCompact && !isHeaderPromo && (
+      {loggedIn && isCompact && (
         <button
-          className="header__menu-btn"
+          className={getClassMenuBtn()}
           onClick={handleClickOpenPopupMenu}
         />
       )}
