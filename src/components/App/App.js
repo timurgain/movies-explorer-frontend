@@ -20,6 +20,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import Tooltip from "../Tooltip/Tooltip";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
   const navigate = useNavigate();
@@ -52,7 +53,10 @@ function App() {
       .catch(console.log);
 
     if (loggedIn) {
-      mainApi.getFavoriteMovies().then(setFavoriteMoviesData).catch(console.log);
+      mainApi
+        .getFavoriteMovies()
+        .then(setFavoriteMoviesData)
+        .catch(console.log);
       moviesApi.getMovies().then(setMoviesData).catch(console.log);
     }
   }, [loggedIn, navigate, pathname]);
@@ -109,64 +113,6 @@ function App() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Searching
-
-  // function handleSearchMovies(query, isShortMovie) {
-  //   const durationLimit = isShortMovie ? config.shortMovie : Infinity;
-  //   const strippedQuery = query
-  //     .replace(config.regExp.punctuation, "")
-  //     .toLowerCase();
-  //   const key = query + durationLimit.toString();
-
-  //   if (key in localStorage) {
-  //     setMoviesData(JSON.parse(localStorage.getItem(key)));
-  //   } else {
-  //     const filteredMovies = moviesData.reduce((result, movie) => {
-  //       const strippedName = movie.nameRU
-  //         .replace(config.regExp.punctuation, "")
-  //         .toLowerCase();
-  //       if (
-  //         strippedName.includes(strippedQuery) &&
-  //         movie.duration < durationLimit
-  //       ) {
-  //         result.push(movie);
-  //       }
-  //       return result;
-  //     }, []);
-
-  //     setMoviesData(filteredMovies);
-  //     localStorage.setItem(key, JSON.stringify(filteredMovies));
-  //   }
-  // }
-
-  // function handleSearchFavorites(query, isShortMovie) {
-  //   const durationLimit = isShortMovie ? config.shortMovie : Infinity;
-  //   const strippedQuery = query
-  //     .replace(config.regExp.punctuation, "")
-  //     .toLowerCase();
-  //   const key = query + durationLimit.toString();
-
-  //   if (key in localStorage) {
-  //     setMoviesData(JSON.parse(localStorage.getItem(key)));
-  //   } else {
-  //     const filteredMovies = moviesData.reduce((result, movie) => {
-  //       const strippedName = movie.nameRU
-  //         .replace(config.regExp.punctuation, "")
-  //         .toLowerCase();
-  //       if (
-  //         strippedName.includes(strippedQuery) &&
-  //         movie.duration < durationLimit
-  //       ) {
-  //         result.push(movie);
-  //       }
-  //       return result;
-  //     }, []);
-
-  //     setMoviesData(filteredMovies);
-  //     localStorage.setItem(key, JSON.stringify(filteredMovies));
-  //   }
-  // }
 
   // Use main API, register, auth
 
@@ -267,18 +213,8 @@ function App() {
                 }}
               >
                 <Routes>
+                  {/* unprotected routes*/}
                   <Route path="/" element={<Main />} />
-                  <Route path="/movies" element={<Movies />} />
-                  <Route path="/saved-movies" element={<SavedMovies />} />
-                  <Route
-                    path="/profile"
-                    element={
-                      <Profile
-                        onSubmit={handleSubmitProfile}
-                        onLogout={handleLogout}
-                      />
-                    }
-                  />
                   <Route
                     path="/signup"
                     element={<Register onSubmit={handleSubmitRegister} />}
@@ -287,8 +223,26 @@ function App() {
                     path="/signin"
                     element={<Login onSubmit={handleSubmitLogin} />}
                   />
+
+                  {/* protected routes */}
+                  <Route element={<ProtectedRoute isLoggedIn={loggedIn} />}>
+                    <Route path="/movies" element={<Movies />} />
+                    <Route path="/saved-movies" element={<SavedMovies />} />
+                    <Route
+                      path="/profile"
+                      element={
+                        <Profile
+                          onSubmit={handleSubmitProfile}
+                          onLogout={handleLogout}
+                        />
+                      }
+                    />
+                  </Route>
+
+                  {/* page not found routes */}
                   <Route path="*" element={<PageNotFound />} />
                 </Routes>
+
               </MoviesDataContext.Provider>
             </PopupTooltipContex.Provider>
           </PopupNavContext.Provider>
