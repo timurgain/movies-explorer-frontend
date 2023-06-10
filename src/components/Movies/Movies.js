@@ -1,19 +1,43 @@
-import './Movies.css';
+import "./Movies.css";
 import React from "react";
-import Header from "../Header/Header"
+import { useLocation } from "react-router-dom";
+import { stripQuery, getQueryKey, getFilteredMovies } from "../../utils/search";
+import { MoviesDataContext } from "../../contexts/MoviesDataContext";
+import Header from "../Header/Header";
 import SearchForm from "./SearchForm/SearchForm";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 import Footer from "../Footer/Footer";
 
-function Movies({onSearch, ...props}) {
+function Movies({ onSearch, ...props }) {
+  const { pathname } = useLocation();
+  const { moviesData } = React.useContext(MoviesDataContext);
+  const [movies, setMovies] = React.useState([]);
+
+  function handleSearch(query, isShortMovie, sourceData = moviesData) {
+    const { strippedQuery, durationLimit } = stripQuery(query, isShortMovie);
+    const key = getQueryKey(pathname, query, durationLimit);
+
+    if (key in localStorage) {
+      setMovies(JSON.parse(localStorage.getItem(key)));
+    } else {
+      const filteredMovies = getFilteredMovies(
+        sourceData,
+        strippedQuery,
+        durationLimit
+      );
+      setMovies(filteredMovies);
+      localStorage.setItem(key, JSON.stringify(filteredMovies));
+    }
+  }
+
   return (
     <>
       <Header displayNav={true} />
       <div className="movies">
-        <SearchForm onSearch={onSearch}/>
-        <MoviesCardList />
+        <SearchForm onSearch={handleSearch} />
+        <MoviesCardList movieList={movies} />
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

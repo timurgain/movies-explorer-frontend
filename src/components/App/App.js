@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import config from "../../config";
 import moviesApi from "../../utils/MoviesApi";
@@ -8,11 +8,7 @@ import {
   CurrentUserContext,
   defaultCurrentUser,
 } from "../../contexts/CurrentUserContext";
-import {
-  MoviesDataContext,
-  defaultMoviesData,
-  defaultFavoriteMoviesData,
-} from "../../contexts/MoviesDataContext";
+import { MoviesDataContext } from "../../contexts/MoviesDataContext";
 import { DeviceContext, enumWindowWidth } from "../../contexts/DeviceContext";
 import PopupNavContext from "../../contexts/PopupNavContext";
 import PopupTooltipContex from "../../contexts/PopupTooltipContext";
@@ -27,11 +23,11 @@ import Tooltip from "../Tooltip/Tooltip";
 
 function App() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const [moviesData, setMoviesData] = React.useState(defaultMoviesData);
-  const [favoriteMoviesData, setFavoriteMoviesData] = React.useState(
-    defaultFavoriteMoviesData
-  );
+  const [moviesData, setMoviesData] = React.useState([]);
+  const [favoriteMoviesData, setFavoriteMoviesData] = React.useState([]);
+
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
   const [device, setDevice] = React.useState("tablet");
@@ -41,17 +37,25 @@ function App() {
 
   const isAnyPopupOpen = isPopupNavOpen || isPopupTooltipOpen;
 
-  // Set up the current user and check the jwt
+  // Load data from Main and BeatFilm backends, if logged in
 
   React.useEffect(() => {
     mainApi
       .getUserMe()
       .then((user) => {
-        setLoggedIn(true);
         setCurrentUser(user);
+        setLoggedIn(true);
+        if (["/signup", "/signin"].includes(pathname)) {
+          navigate("/movies", { replace: true });
+        }
       })
       .catch(console.log);
-  }, [loggedIn]);
+
+    if (loggedIn) {
+      mainApi.getFavoriteMovies().then(setFavoriteMoviesData).catch(console.log);
+      moviesApi.getMovies().then(setMoviesData).catch(console.log);
+    }
+  }, [loggedIn, navigate, pathname]);
 
   // Manage popup
 
@@ -84,9 +88,9 @@ function App() {
   function showTooltip(message, btnText) {
     setTooltip({
       message: message,
-      btnText: btnText
+      btnText: btnText,
     });
-    setIsPopupTooltipOpen(true)
+    setIsPopupTooltipOpen(true);
   }
 
   // Manage resize and device type
@@ -106,41 +110,63 @@ function App() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // Use Beatfilm API
+  // Searching
 
-  function handleSearchMovies(query, isShortMovie) {
-    const durationLimit = isShortMovie ? config.shortMovie : Infinity;
-    const strippedQuery = query
-      .replace(config.regExp.punctuation, "")
-      .toLowerCase();
-    const key = query + durationLimit.toString();
+  // function handleSearchMovies(query, isShortMovie) {
+  //   const durationLimit = isShortMovie ? config.shortMovie : Infinity;
+  //   const strippedQuery = query
+  //     .replace(config.regExp.punctuation, "")
+  //     .toLowerCase();
+  //   const key = query + durationLimit.toString();
 
-    if (key in localStorage) {
-      setMoviesData(JSON.parse(localStorage.getItem(key)));
-      return;
-    }
+  //   if (key in localStorage) {
+  //     setMoviesData(JSON.parse(localStorage.getItem(key)));
+  //   } else {
+  //     const filteredMovies = moviesData.reduce((result, movie) => {
+  //       const strippedName = movie.nameRU
+  //         .replace(config.regExp.punctuation, "")
+  //         .toLowerCase();
+  //       if (
+  //         strippedName.includes(strippedQuery) &&
+  //         movie.duration < durationLimit
+  //       ) {
+  //         result.push(movie);
+  //       }
+  //       return result;
+  //     }, []);
 
-    moviesApi
-      .getMovies()
-      .then((movies) => {
-        const filteredMovies = movies.reduce((result, movie) => {
-          const strippedName = movie.nameRU
-            .replace(config.regExp.punctuation, "")
-            .toLowerCase();
-          if (
-            strippedName.includes(strippedQuery) &&
-            movie.duration < durationLimit
-          ) {
-            result.push(movie);
-          }
-          return result;
-        }, []);
+  //     setMoviesData(filteredMovies);
+  //     localStorage.setItem(key, JSON.stringify(filteredMovies));
+  //   }
+  // }
 
-        setMoviesData(filteredMovies);
-        localStorage.setItem(key, JSON.stringify(filteredMovies));
-      })
-      .catch(reportError);
-  }
+  // function handleSearchFavorites(query, isShortMovie) {
+  //   const durationLimit = isShortMovie ? config.shortMovie : Infinity;
+  //   const strippedQuery = query
+  //     .replace(config.regExp.punctuation, "")
+  //     .toLowerCase();
+  //   const key = query + durationLimit.toString();
+
+  //   if (key in localStorage) {
+  //     setMoviesData(JSON.parse(localStorage.getItem(key)));
+  //   } else {
+  //     const filteredMovies = moviesData.reduce((result, movie) => {
+  //       const strippedName = movie.nameRU
+  //         .replace(config.regExp.punctuation, "")
+  //         .toLowerCase();
+  //       if (
+  //         strippedName.includes(strippedQuery) &&
+  //         movie.duration < durationLimit
+  //       ) {
+  //         result.push(movie);
+  //       }
+  //       return result;
+  //     }, []);
+
+  //     setMoviesData(filteredMovies);
+  //     localStorage.setItem(key, JSON.stringify(filteredMovies));
+  //   }
+  // }
 
   // Use main API, register, auth
 
@@ -149,9 +175,9 @@ function App() {
       .postUser(email, password, name)
       .then((user) => {
         navigate("/signin", { replace: true });
-        showTooltip('Регистрация прошла успешно!', 'Здорово')
+        showTooltip("Регистрация прошла успешно!", "Здорово");
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
   function handleSubmitLogin({ email, password }) {
@@ -161,17 +187,17 @@ function App() {
         setLoggedIn(true);
         navigate("/movies", { replace: true });
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
   function handleSubmitProfile({ name, email }) {
     mainApi
       .patchUserMe(name, email)
       .then((user) => {
-        setCurrentUser(user)
-        showTooltip('Данные обновили успешно!', 'Здорово')
+        setCurrentUser(user);
+        showTooltip("Данные обновили успешно!", "Здорово");
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
   function handleLogout() {
@@ -181,19 +207,40 @@ function App() {
         setLoggedIn(false);
         navigate("/", { replace: true });
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, 'Понятно'));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
   // Use main API, favorite movies
 
-  function handleClickAddToFavoriteMovies() {
-    // makes api request
-    console.log("API, add");
+  function handleClickAddToFavoriteMovies(movie) {
+    const data = {
+      ...movie,
+      movieId: movie.id,
+      image: config.backend.imageUrl + movie.image.url,
+      thumbnail: config.backend.imageUrl + movie.image.formats.thumbnail.url,
+    };
+    delete data.id;
+    delete data.created_at;
+    delete data.updated_at;
+
+    mainApi
+      .postMovie(data)
+      .then((movie) => {
+        setFavoriteMoviesData([...favoriteMoviesData, movie]);
+      })
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
-  function handleClickRemoveFromFavoriteMovies() {
-    // makes api request
-    console.log("API, remove");
+  function handleClickRemoveFromFavoriteMovies(movie) {
+    const { _id } = movie;
+    mainApi
+      .deleteMovie(_id)
+      .then(() =>
+        setFavoriteMoviesData(
+          favoriteMoviesData.filter((movie) => movie._id !== _id)
+        )
+      )
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
 
   return (
@@ -220,21 +267,17 @@ function App() {
                 }}
               >
                 <Routes>
-                  <Route
-                    path="/"
-                    element={<Main />} />
-                  <Route
-                    path="/movies"
-                    element={<Movies onSearch={handleSearchMovies} />}
-                  />
-                  <Route
-                    path="/saved-movies"
-                    element={<SavedMovies />} />
+                  <Route path="/" element={<Main />} />
+                  <Route path="/movies" element={<Movies />} />
+                  <Route path="/saved-movies" element={<SavedMovies />} />
                   <Route
                     path="/profile"
-                    element={<Profile
-                              onSubmit={handleSubmitProfile}
-                              onLogout={handleLogout} />}
+                    element={
+                      <Profile
+                        onSubmit={handleSubmitProfile}
+                        onLogout={handleLogout}
+                      />
+                    }
                   />
                   <Route
                     path="/signup"
@@ -244,9 +287,7 @@ function App() {
                     path="/signin"
                     element={<Login onSubmit={handleSubmitLogin} />}
                   />
-                  <Route
-                    path="*"
-                    element={<PageNotFound />} />
+                  <Route path="*" element={<PageNotFound />} />
                 </Routes>
               </MoviesDataContext.Provider>
             </PopupTooltipContex.Provider>

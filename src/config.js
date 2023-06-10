@@ -9,6 +9,11 @@ const config = {
     userNamePattern: "[A-Za-zа-яА-Я \\-]{2,}",
   },
   shortMovie: 40,
+  pagination: {
+    desktop: { initial: 12, more: 3 },
+    tablet: { initial: 8, more: 2 },
+    mobile: { initial: 5, more: 2 },
+  },
 };
 
 export default config;

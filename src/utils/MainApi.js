@@ -18,6 +18,8 @@ class MainApi {
     };
   }
 
+  // User
+
   getUserMe() {
     this._options.method = "GET";
     if ("body" in this._options) delete this._options.body;
@@ -54,6 +56,32 @@ class MainApi {
     this._options.method = "POST";
     if ("body" in this._options) delete this._options.body;
     return fetch(`${this._baseUrl}/signout`, this._options).then(
+      this._responseToResolve
+    );
+  }
+
+  // Movies
+
+  getFavoriteMovies() {
+    this._options.method = "GET";
+    if ("body" in this._options) delete this._options.body;
+    return fetch(`${this._baseUrl}/movies`, this._options).then(
+      this._responseToJSON
+    );
+  }
+
+  postMovie(movie) {
+    // country, director, duration, year, description, image, trailerLink, thumbnail, movieId, nameRU, nameEN
+    this._options.method = "POST";
+    this._options.body = JSON.stringify(movie);
+    return fetch(`${this._baseUrl}/movies`, this._options).then(
+      this._responseToJSON
+    );
+  }
+
+  deleteMovie(_id) {
+    this._options.method = "DELETE";
+    return fetch(`${this._baseUrl}/movies/${_id}`, this._options).then(
       this._responseToResolve
     );
   }

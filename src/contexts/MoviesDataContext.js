@@ -149,26 +149,26 @@ const defaultMoviesData = [
 ];
 
 const defaultFavoriteMoviesData = [
-  {
-    id: '110110',
-    image: defaultGimmePath,
-    nameRU: 'Gimme Danger: История Игги и The Stooges',
-    duration: '1ч 17м'
-  },
+  // {
+  //   id: '110110',
+  //   image: defaultGimmePath,
+  //   nameRU: 'Gimme Danger: История Игги и The Stooges',
+  //   duration: '1ч 17м'
+  // },
 
-  {
-    id: '100100',
-    image: defaultRunPath,
-    nameRU: 'Бег это свобода',
-    duration: '1ч 17м'
-  },
+  // {
+  //   id: '100100',
+  //   image: defaultRunPath,
+  //   nameRU: 'Бег это свобода',
+  //   duration: '1ч 17м'
+  // },
 
-  {
-    id: '9090',
-    image: defaultBaskiaPath,
-    nameRU: 'Баския: Взрыв реальности',
-    duration: '1ч 17м'
-  },
+  // {
+  //   id: '9090',
+  //   image: defaultBaskiaPath,
+  //   nameRU: 'Баския: Взрыв реальности',
+  //   duration: '1ч 17м'
+  // },
 ]
 
 export { MoviesDataContext, defaultMoviesData, defaultFavoriteMoviesData };

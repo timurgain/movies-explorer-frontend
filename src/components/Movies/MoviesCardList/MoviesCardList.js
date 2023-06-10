@@ -1,69 +1,56 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 import { MoviesDataContext } from "../../../contexts/MoviesDataContext";
 import { DeviceContext } from "../../../contexts/DeviceContext";
 import "./MoviesCardList.css";
+import config from "../../../config";
 import MoviesCard from "../MoviesCard/MoviesCard";
 import Preloader from "../../Preloader/Preloader";
 
-function MoviesCardList({ movies, ...props }) {
+function MoviesCardList({ movieList, ...props }) {
   const pathname = useLocation().pathname;
+  const { pagination } = config;
 
   const device = React.useContext(DeviceContext);
   const {
-    moviesData,
     favoriteMoviesData,
     handleClickAddToFavoriteMovies,
     handleClickRemoveFromFavoriteMovies,
   } = React.useContext(MoviesDataContext);
 
-  const [moviesList, setMoviesLIst] = React.useState([]);
   const [isPaginationBtn, setIsPaginationBtn] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [toShow, setToShow] = React.useState(0);
   const [isPreloader, setIsPreloader] = React.useState(false);
 
-  const handleClickFavorites = useCallback(() => {
-    if (pathname === "/movies") handleClickAddToFavoriteMovies();
-    if (pathname === "/saved-movies") handleClickRemoveFromFavoriteMovies();
-  }, [
-    pathname,
-    handleClickAddToFavoriteMovies,
-    handleClickRemoveFromFavoriteMovies,
-  ]);
-
   React.useEffect(() => {
-    if (pathname === "/movies") setMoviesLIst(moviesData);
-    if (pathname === "/saved-movies") setMoviesLIst(favoriteMoviesData);
-  }, [pathname, moviesData, favoriteMoviesData]);
-
-  React.useEffect(() => {
-    const toShowConfig = {
-      desktop: { initial: 12, more: 3 },
-      tablet: { initial: 8, more: 2 },
-      mobile: { initial: 5, more: 2 },
-    };
-    function calcToShow(device) {
-      return toShowConfig[device].initial + toShowConfig[device].more * page;
-    }
-
-    moviesList.length > toShow
+    setToShow(pagination[device].initial + pagination[device].more * page)
+    movieList.length > toShow
       ? setIsPaginationBtn(true)
       : setIsPaginationBtn(false);
+  }, [device, pagination, movieList, page, toShow]);
 
-    if (device === "desktop") setToShow(calcToShow("desktop"));
-    if (device === "tablet") setToShow(calcToShow("tablet"));
-    if (device === "mobile") setToShow(calcToShow("mobile"));
-  }, [device, moviesList, page, toShow]);
+
+  function isFavorite(movie) {
+    return favoriteMoviesData.reduce((res, favorite) => {
+      if (favorite.movieId === movie.id) {
+        movie._id = favorite._id;  // _id is needed in case of delete request
+        return true
+      }
+      return res
+    }, false)
+  }
 
   function renderMovies(toShow) {
-    return moviesList.slice(0, toShow).map((movie) => {
+    return movieList.slice(0, toShow).map((movie) => {
       return (
         <li key={movie.id}>
           <MoviesCard
             movie={movie}
-            onClickHandler={handleClickFavorites}
+            onAdd={handleClickAddToFavoriteMovies}
+            onRemove={handleClickRemoveFromFavoriteMovies}
             pathname={pathname}
+            isFavorite={isFavorite(movie)}
           />
         </li>
       );
