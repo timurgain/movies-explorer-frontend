@@ -5,7 +5,6 @@ import { DeviceContext } from "../../../contexts/DeviceContext";
 import "./MoviesCardList.css";
 import config from "../../../config";
 import MoviesCard from "../MoviesCard/MoviesCard";
-import Preloader from "../../Preloader/Preloader";
 
 function MoviesCardList({ movieList, ...props }) {
   const pathname = useLocation().pathname;
@@ -21,7 +20,6 @@ function MoviesCardList({ movieList, ...props }) {
   const [isPaginationBtn, setIsPaginationBtn] = React.useState(false);
   const [page, setPage] = React.useState(0);
   const [toShow, setToShow] = React.useState(0);
-  const [isPreloader, setIsPreloader] = React.useState(false);
 
   React.useEffect(() => {
     setToShow(pagination[device].initial + pagination[device].more * page)
@@ -58,12 +56,7 @@ function MoviesCardList({ movieList, ...props }) {
   }
 
   function handleClickLoadMore() {
-    setIsPaginationBtn(false);
-    setIsPreloader(true);
-    setTimeout(() => {
-      setIsPreloader(false);
-      setPage(page + 1);
-    }, 1000);
+    setPage(page + 1);
   }
 
   return (
@@ -75,7 +68,6 @@ function MoviesCardList({ movieList, ...props }) {
           Ещё
         </button>
       )}
-      {isPreloader && <Preloader />}
     </main>
   );
 }

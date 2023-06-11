@@ -3,21 +3,33 @@ import "./SearchForm.css";
 import searchIconPath from "../../../images/icon_search.svg";
 import PopupTooltipContex from "../../../contexts/PopupTooltipContext";
 
-function SearchForm({onSearch, ...props}) {
-  const { setIsPopupTooltipOpen, setTooltip } = React.useContext(PopupTooltipContex);
+function SearchForm({ onSearch, lastSearch, ...props }) {
+  const { setIsPopupTooltipOpen, setTooltip } =
+    React.useContext(PopupTooltipContex);
+
+  const [values, setValues] = React.useState({
+    query: '',
+    isShortMovie: false,
+  });
+
+  React.useEffect(() => {
+    setValues({
+      query: lastSearch.query,
+      isShortMovie: lastSearch.isShortMovie,
+    })
+  }, [lastSearch])
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    const query = evt.target["query"].value
-    const isShortMovie = evt.target["is-short-movie"].checked
-
-    if (!query) {
-      setIsPopupTooltipOpen(true)
-      setTooltip({message: 'Нужно ввести ключевое слово', btnText: 'Понятно'})
-      return
+    if (!values.query) {
+      setIsPopupTooltipOpen(true);
+      setTooltip({
+        message: "Нужно ввести ключевое слово",
+        btnText: "Понятно",
+      });
+      return;
     }
-
-    onSearch(query, isShortMovie);
+    onSearch(values.query, values.isShortMovie);
   }
 
   return (
@@ -29,6 +41,8 @@ function SearchForm({onSearch, ...props}) {
           placeholder="Фильм"
           type="text"
           name="query"
+          onChange={(evt) => setValues({...values, query: evt.target.value})}
+          value={values.query}
         />
         <button className="search__submit" />
       </div>
@@ -38,6 +52,8 @@ function SearchForm({onSearch, ...props}) {
           className="search__checkbox_type_functional"
           type="checkbox"
           name="is-short-movie"
+          onChange={(evt) => setValues({...values, isShortMovie: evt.target.checked})}
+          checked={values.isShortMovie}
         />
         <span className="search__checkbox_type_visible" />
         <p className="search__checkbox-label">Короткометражки</p>
