@@ -4,7 +4,7 @@ function Message({message, src, ...props}) {
   return (
     <section className='message' aria-label='message'>
       <div className='message__container'>
-        <img className='message__image' src={src} alt="icon" />
+        <img className='message__icon' src={src} alt="icon" />
         <p className='message__paragraph'>
           {message}
         </p>
