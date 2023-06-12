@@ -10,8 +10,7 @@ import {
 } from "../../contexts/CurrentUserContext";
 import { MoviesDataContext } from "../../contexts/MoviesDataContext";
 import { DeviceContext, enumWindowWidth } from "../../contexts/DeviceContext";
-import PopupNavContext from "../../contexts/PopupNavContext";
-import PopupTooltipContex from "../../contexts/PopupTooltipContext";
+import PopupContex from "../../contexts/PopupContext";
 import Main from "../Main/Main";
 import Movies from "../Movies/Movies";
 import SavedMovies from "../SavedMovies/SavedMovies";
@@ -20,6 +19,7 @@ import Register from "../Register/Register";
 import Login from "../Login/Login";
 import PageNotFound from "../PageNotFound/PageNotFound";
 import Tooltip from "../Tooltip/Tooltip";
+import Video from "../Video/Video";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 function App() {
@@ -35,8 +35,11 @@ function App() {
   const [isPopupNavOpen, setIsPopupNavOpen] = React.useState(false);
   const [isPopupTooltipOpen, setIsPopupTooltipOpen] = React.useState(false);
   const [tooltip, setTooltip] = React.useState({ message: "", btnText: "" });
+  const [isPopupVideoOpen, setIsPopupVideoOpen] = React.useState(false);
+  const [video, setVideo] = React.useState({ link: "", title: "" });
 
-  const isAnyPopupOpen = isPopupNavOpen || isPopupTooltipOpen;
+  const isAnyPopupOpen =
+    isPopupNavOpen || isPopupTooltipOpen || isPopupVideoOpen;
 
   // Load data from Main and BeatFilm backends, if logged in
 
@@ -67,6 +70,8 @@ function App() {
     function closeAllPopups() {
       setIsPopupNavOpen(false);
       setIsPopupTooltipOpen(false);
+      setIsPopupVideoOpen(false);
+      setVideo({ link: '', title: '' });
     }
 
     function handleKeydownEsc(evt) {
@@ -95,6 +100,11 @@ function App() {
       btnText: btnText,
     });
     setIsPopupTooltipOpen(true);
+  }
+
+  function showVideo(videoLink, title) {
+    setVideo({ link: videoLink, title: title });
+    setIsPopupVideoOpen(true);
   }
 
   // Manage resize and device type
@@ -192,61 +202,54 @@ function App() {
   return (
     <>
       <DeviceContext.Provider value={device}>
-        <CurrentUserContext.Provider value={{loggedIn, currentUser}}>
-          <PopupNavContext.Provider
-            value={{ isPopupNavOpen, setIsPopupNavOpen }}
+        <CurrentUserContext.Provider value={{ loggedIn, currentUser }}>
+          <PopupContex.Provider
+            value={{
+              Nav: { isPopupNavOpen, setIsPopupNavOpen },
+              showTooltip,
+              showVideo,
+            }}
           >
-            <PopupTooltipContex.Provider
+            <MoviesDataContext.Provider
               value={{
-                isPopupTooltipOpen,
-                setIsPopupTooltipOpen,
-                tooltip,
-                setTooltip,
+                moviesData,
+                favoriteMoviesData,
+                handleClickAddToFavoriteMovies,
+                handleClickRemoveFromFavoriteMovies,
               }}
             >
-              <MoviesDataContext.Provider
-                value={{
-                  moviesData,
-                  favoriteMoviesData,
-                  handleClickAddToFavoriteMovies,
-                  handleClickRemoveFromFavoriteMovies,
-                }}
-              >
-                <Routes>
+              <Routes>
+                {/* unprotected routes*/}
+                <Route path="/" element={<Main />} />
+                <Route
+                  path="/signup"
+                  element={<Register onSubmit={handleSubmitRegister} />}
+                />
+                <Route
+                  path="/signin"
+                  element={<Login onSubmit={handleSubmitLogin} />}
+                />
 
-                  {/* unprotected routes*/}
-                  <Route path="/" element={<Main />} />
+                {/* protected routes */}
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/movies" element={<Movies />} />
+                  <Route path="/saved-movies" element={<SavedMovies />} />
                   <Route
-                    path="/signup"
-                    element={<Register onSubmit={handleSubmitRegister} />}
+                    path="/profile"
+                    element={
+                      <Profile
+                        onSubmit={handleSubmitProfile}
+                        onLogout={handleLogout}
+                      />
+                    }
                   />
-                  <Route
-                    path="/signin"
-                    element={<Login onSubmit={handleSubmitLogin} />}
-                  />
+                </Route>
 
-                  {/* protected routes */}
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="/movies" element={<Movies />} />
-                    <Route path="/saved-movies" element={<SavedMovies />} />
-                    <Route
-                      path="/profile"
-                      element={
-                        <Profile
-                          onSubmit={handleSubmitProfile}
-                          onLogout={handleLogout}
-                        />
-                      }
-                    />
-                  </Route>
-
-                  {/* page not found routes */}
-                  <Route path="*" element={<PageNotFound />} />
-                </Routes>
-
-              </MoviesDataContext.Provider>
-            </PopupTooltipContex.Provider>
-          </PopupNavContext.Provider>
+                {/* page not found routes */}
+                <Route path="*" element={<PageNotFound />} />
+              </Routes>
+            </MoviesDataContext.Provider>
+          </PopupContex.Provider>
         </CurrentUserContext.Provider>
       </DeviceContext.Provider>
 
@@ -256,6 +259,8 @@ function App() {
         btnText={tooltip.btnText}
         onClick={() => setIsPopupTooltipOpen(false)}
       />
+
+      <Video isOpen={isPopupVideoOpen} videoLink={video.link} title={video.title} />
     </>
   );
 }

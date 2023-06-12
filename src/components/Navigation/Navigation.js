@@ -2,7 +2,7 @@ import "./Navigation.css";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { DeviceContext } from "../../contexts/DeviceContext";
-import PopupNavContext from "../../contexts/PopupNavContext";
+import PopupContext from "../../contexts/PopupContext";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import NavigationPromo from "./NavigationPromo";
 import NavigationDesktop from "./NavigationDesktop";
@@ -13,8 +13,8 @@ function Navigation({ onClose, ...props }) {
 
   const device = React.useContext(DeviceContext);
   const { loggedIn } = React.useContext(CurrentUserContext);
-  const { isPopupNavOpen, setIsPopupNavOpen } =
-    React.useContext(PopupNavContext);
+  const { Nav: {isPopupNavOpen, setIsPopupNavOpen} } =
+    React.useContext(PopupContext);
 
   const [isCompact, setIsCompact] = React.useState(true);
 

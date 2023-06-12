@@ -1,9 +1,11 @@
 import React from "react";
 import "./MoviesCard.css";
 import config from "../../../config";
+import PopupContex from "../../../contexts/PopupContext";
+
 
 function MoviesCard({ movie, onAdd, onRemove, pathname, isFavorite, ...props }) {
-  // const [isFavorite, setIsFavorite] = React.useState(false);
+  const { showVideo } = React.useContext(PopupContex);
 
   function getImageSrc() {
     if (movie.image.url) return config.backend.imageUrl + movie.image.url
@@ -11,13 +13,15 @@ function MoviesCard({ movie, onAdd, onRemove, pathname, isFavorite, ...props }) 
   }
 
   function handleClickAdd() {
-    // setIsFavorite(!isFavorite);
     onAdd(movie);
   }
 
   function handleClickRemove() {
-    // setIsFavorite(!isFavorite)
     onRemove(movie);
+  }
+
+  function handleClickCard() {
+    showVideo(movie.trailerLink, movie.nameRU)
   }
 
   return (
@@ -26,6 +30,7 @@ function MoviesCard({ movie, onAdd, onRemove, pathname, isFavorite, ...props }) 
         className="card__image"
         src={getImageSrc()}
         alt={movie.nameRU}
+        onClick={handleClickCard}
       />
 
       {pathname === "/movies" && !isFavorite && (

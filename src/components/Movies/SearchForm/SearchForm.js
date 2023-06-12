@@ -1,11 +1,10 @@
 import React from "react";
 import "./SearchForm.css";
 import searchIconPath from "../../../images/icon_search.svg";
-import PopupTooltipContex from "../../../contexts/PopupTooltipContext";
+import PopupContex from "../../../contexts/PopupContext";
 
 function SearchForm({ onSearch, lastSearch, ...props }) {
-  const { setIsPopupTooltipOpen, setTooltip } =
-    React.useContext(PopupTooltipContex);
+  const { showTooltip } = React.useContext(PopupContex);
 
   const [values, setValues] = React.useState({
     query: '',
@@ -22,11 +21,7 @@ function SearchForm({ onSearch, lastSearch, ...props }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     if (!values.query) {
-      setIsPopupTooltipOpen(true);
-      setTooltip({
-        message: "Нужно ввести ключевое слово",
-        btnText: "Понятно",
-      });
+      showTooltip("Нужно ввести ключевое слово", "Понятно")
       return;
     }
     onSearch(values.query, values.isShortMovie);
