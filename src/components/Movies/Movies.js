@@ -1,4 +1,5 @@
 import "./Movies.css";
+import arrowPath from "../../images/arrow-up.png";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { MoviesDataContext } from "../../contexts/MoviesDataContext";
@@ -21,7 +22,15 @@ function Movies({ onSearch, ...props }) {
     movies,
     lastSearch,
     handleSearch,
-  } = useSearch("lastSearchMovie", pathname, moviesData);
+  } = useSearch({
+    lastSearchKey: "lastSearchMovie",
+    pathname: pathname,
+    sourceData: moviesData,
+    initialMessage: {
+      message: "Введите ключевое слово в строке поиска фильмов, например, Бэнкси",
+      src: arrowPath,
+    },
+  });
 
   return (
     <>

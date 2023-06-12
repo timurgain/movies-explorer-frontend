@@ -6,20 +6,15 @@ import { objToLocalStorage, getResult } from "../utils/search";
 /**
  * Manages searching movies, keeps the last query params and result in the LocalStorage
  *
- * @param {string} lastSearchKey
- * @param {string} pathname
- * @param {[]} sourceData
+ * @param {{}} param0
  * @returns
  */
 
-function useSearch(lastSearchKey, pathname, sourceData) {
+function useSearch({lastSearchKey, pathname, sourceData, initialMessage}) {
   const [movies, setMovies] = React.useState([]);
   const [showPreloader, setShowPreloader] = React.useState(false);
   const [showMessage, setShowMessage] = React.useState(false);
-  const [message, setMessage] = React.useState({
-    message: "Введите ключевое слово в строке поиска фильмов, например, Бэнкси",
-    src: arrowPath,
-  });
+  const [message, setMessage] = React.useState(initialMessage);
   const [lastSearch, setLastSearch] = React.useState({
     query: "",
     isShortMovie: false,

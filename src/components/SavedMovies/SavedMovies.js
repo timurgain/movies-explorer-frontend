@@ -1,4 +1,5 @@
 import "./SavedMovies.css";
+import arrowPath from "../../images/arrow-up.png";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { MoviesDataContext } from "../../contexts/MoviesDataContext";
@@ -21,7 +22,15 @@ function SavedMovies({ onSearch, ...props }) {
     movies,
     lastSearch,
     handleSearch,
-  } = useSearch("lastSearchFavorites", pathname, favoriteMoviesData);
+  } = useSearch({
+    lastSearchKey: "lastSearchFavorites",
+    pathname: pathname,
+    sourceData: favoriteMoviesData,
+    initialMessage: {
+      message: "Поиск по ранее отмеченным фильмам",
+      src: arrowPath,
+    },
+  });
 
   return (
     <>

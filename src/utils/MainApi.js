@@ -87,7 +87,6 @@ class MainApi {
   }
 
   _responseToJSON(response) {
-    console.log(response);
     if (!response.ok) {
       return response.text().then((text) => {
         throw new Error(text);
@@ -97,7 +96,6 @@ class MainApi {
   }
 
   _responseToResolve(response) {
-    console.log(response);
     if (!response.ok) {
       return response.text().then((text) => {
         throw new Error(text);
