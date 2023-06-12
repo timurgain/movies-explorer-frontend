@@ -27,6 +27,16 @@ function SearchForm({ onSearch, lastSearch, ...props }) {
     onSearch(values.query, values.isShortMovie);
   }
 
+  function handleChangeCheckbox(evt) {
+    evt.preventDefault();
+    if (!values.query) {
+      showTooltip("Нужно ввести ключевое слово", "Понятно")
+      return;
+    }
+    setValues({...values, isShortMovie: evt.target.checked})
+    onSearch(values.query, evt.target.checked);
+  }
+
   return (
     <form className="search" onSubmit={handleSubmit} aria-label="Movie search form">
       <div className="search__field">
@@ -47,7 +57,7 @@ function SearchForm({ onSearch, lastSearch, ...props }) {
           className="search__checkbox_type_functional"
           type="checkbox"
           name="is-short-movie"
-          onChange={(evt) => setValues({...values, isShortMovie: evt.target.checked})}
+          onChange={handleChangeCheckbox}
           checked={values.isShortMovie}
         />
         <span className="search__checkbox_type_visible" />
