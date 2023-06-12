@@ -29,7 +29,9 @@ function App() {
   const [moviesData, setMoviesData] = React.useState([]);
   const [favoriteMoviesData, setFavoriteMoviesData] = React.useState([]);
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(
+    JSON.parse(localStorage.getItem("loggedIn")) || false
+  );
   const [currentUser, setCurrentUser] = React.useState(defaultCurrentUser);
   const [device, setDevice] = React.useState("tablet");
   const [isPopupNavOpen, setIsPopupNavOpen] = React.useState(false);
@@ -41,28 +43,50 @@ function App() {
   const isAnyPopupOpen =
     isPopupNavOpen || isPopupTooltipOpen || isPopupVideoOpen;
 
-  // Load data from Main and BeatFilm backends, if logged in
+  // Automatic authorization if user has valid jwt in httpOnly cookies
 
   React.useEffect(() => {
-    mainApi
-      .getUserMe()
-      .then((user) => {
-        setCurrentUser(user);
-        setLoggedIn(true);
-        if (["/signup", "/signin"].includes(pathname)) {
+    if (!loggedIn) {
+      mainApi
+        .getUserMe()
+        .then((user) => {
+          setCurrentUser(user);
+          setLoggedIn(true);
+          localStorage.setItem("loggedIn", true);
           navigate("/movies", { replace: true });
-        }
-      })
-      .catch(console.log);
+        })
+        .catch(console.log);
+    }
+  }, [navigate, loggedIn]);
 
+  // Redirect if authorized
+
+  React.useEffect(() => {
+    if (loggedIn && ["/signup", "/signin"].includes(pathname)) {
+      navigate("/movies", { replace: true });
+    }
+  }, [loggedIn, navigate, pathname]);
+
+  // Load data if authorized
+
+  React.useEffect(() => {
     if (loggedIn) {
+      // favorites movies from Main api
       mainApi
         .getFavoriteMovies()
         .then(setFavoriteMoviesData)
         .catch(console.log);
+      // all movies from BeatFilm api
       moviesApi.getMovies().then(setMoviesData).catch(console.log);
+      // user
+      mainApi
+        .getUserMe()
+        .then((user) => {
+          setCurrentUser(user);
+        })
+        .catch(console.log);
     }
-  }, [loggedIn, navigate, pathname]);
+  }, [loggedIn]);
 
   // Manage popup
 
@@ -71,7 +95,7 @@ function App() {
       setIsPopupNavOpen(false);
       setIsPopupTooltipOpen(false);
       setIsPopupVideoOpen(false);
-      setVideo({ link: '', title: '' });
+      setVideo({ link: "", title: "" });
     }
 
     function handleKeydownEsc(evt) {
@@ -141,6 +165,7 @@ function App() {
       .login(email, password)
       .then(() => {
         setLoggedIn(true);
+        localStorage.setItem("loggedIn", true);
         navigate("/movies", { replace: true });
       })
       .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
@@ -161,6 +186,7 @@ function App() {
       .logout()
       .then(() => {
         setLoggedIn(false);
+        localStorage.clear();
         navigate("/", { replace: true });
       })
       .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
@@ -219,8 +245,11 @@ function App() {
               }}
             >
               <Routes>
+
                 {/* unprotected routes*/}
-                <Route path="/" element={<Main />} />
+                <Route
+                  path="/"
+                  element={<Main />} />
                 <Route
                   path="/signup"
                   element={<Register onSubmit={handleSubmitRegister} />}
@@ -232,21 +261,23 @@ function App() {
 
                 {/* protected routes */}
                 <Route element={<ProtectedRoute />}>
-                  <Route path="/movies" element={<Movies />} />
-                  <Route path="/saved-movies" element={<SavedMovies />} />
+                  <Route
+                    path="/movies"
+                    element={<Movies />} />
+                  <Route
+                    path="/saved-movies"
+                    element={<SavedMovies />} />
                   <Route
                     path="/profile"
                     element={
                       <Profile
                         onSubmit={handleSubmitProfile}
-                        onLogout={handleLogout}
-                      />
-                    }
-                  />
+                        onLogout={handleLogout} /> } />
                 </Route>
 
                 {/* page not found routes */}
                 <Route path="*" element={<PageNotFound />} />
+
               </Routes>
             </MoviesDataContext.Provider>
           </PopupContex.Provider>
@@ -260,7 +291,11 @@ function App() {
         onClick={() => setIsPopupTooltipOpen(false)}
       />
 
-      <Video isOpen={isPopupVideoOpen} videoLink={video.link} title={video.title} />
+      <Video
+        isOpen={isPopupVideoOpen}
+        videoLink={video.link}
+        title={video.title}
+      />
     </>
   );
 }
