@@ -28,7 +28,7 @@ function SearchForm({ onSearch, lastSearch, ...props }) {
   }
 
   return (
-    <form className="search" onSubmit={handleSubmit}>
+    <form className="search" onSubmit={handleSubmit} aria-label="Movie search form">
       <div className="search__field">
         <img className="search__icon" src={searchIconPath} alt="Search icon" />
         <input
@@ -51,7 +51,7 @@ function SearchForm({ onSearch, lastSearch, ...props }) {
           checked={values.isShortMovie}
         />
         <span className="search__checkbox_type_visible" />
-        <p className="search__checkbox-label">Короткометражки</p>
+        <span className="search__checkbox-label">Короткометражки</span>
       </label>
     </form>
   );

@@ -60,7 +60,7 @@ function MoviesCardList({ movieList, ...props }) {
   }
 
   return (
-    <main className="main">
+    <section className="main" aria-label="Movie list">
       <ul className="main__list">{renderMovies(toShow)}</ul>
 
       {isPaginationBtn && (
@@ -68,7 +68,7 @@ function MoviesCardList({ movieList, ...props }) {
           Ещё
         </button>
       )}
-    </main>
+    </section>
   );
 }
 

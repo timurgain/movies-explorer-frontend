@@ -26,7 +26,7 @@ function Movies({ onSearch, ...props }) {
   return (
     <>
       <Header displayNav={true} />
-      <div className="movies">
+      <main className="movies">
         <SearchForm onSearch={handleSearch} lastSearch={lastSearch} />
 
         {showPreloader && <Preloader />}
@@ -37,7 +37,7 @@ function Movies({ onSearch, ...props }) {
         {!showMessage && !showPreloader && (
           <MoviesCardList movieList={movies} />
         )}
-      </div>
+      </main>
       <Footer />
     </>
   );

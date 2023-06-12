@@ -16,7 +16,6 @@ function Video({ isOpen, title, videoLink, ...props }) {
       <div className="video__container">
         <iframe
           className="video__iframe"
-          type="text/html"
           width="720"
           height="405"
           src={getLink()}
