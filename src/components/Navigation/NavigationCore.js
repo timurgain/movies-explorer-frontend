@@ -15,14 +15,14 @@ function NavigationCore({ isSideMenu, ...props }) {
   }
 
   function getClassProfileBtn() {
-    if (pathname === '/') {
+    if (pathname === '/' && !isSideMenu) {
       return "nav__btn nav__btn_type_profile-promo"
     }
     return "nav__btn nav__btn_type_profile"
   }
 
   function getClassProfileIcon() {
-    if (pathname === '/') {
+    if (pathname === '/' && !isSideMenu) {
       return "nav__icon nav__icon_type_promo"
     }
     return "nav__icon"
