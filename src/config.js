@@ -7,7 +7,7 @@ const config = {
   regExp: {
     punctuation: /[!"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~«»\s]/g,
     userNamePattern: "[A-Za-zа-яА-Я \\-]{2,}",
-    emailPattern: "^[\\w.-]+@[a-zA-Z\\d_-]+?(?:\\.[a-zA-Z]{2,4})+$",
+    emailPattern: "^[\\w.\\-]+@[a-zA-Z\\d_\\-]+?(?:\\.[a-zA-Z]{2,4})+$",
   },
   shortMovie: 40,
   pagination: {

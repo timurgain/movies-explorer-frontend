@@ -1,5 +1,5 @@
 import "./SavedMovies.css";
-import arrowPath from "../../images/arrow-up.png";
+import iconPath from '../../images/info-icon.png';
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { MoviesDataContext } from "../../contexts/MoviesDataContext";
@@ -23,12 +23,13 @@ function SavedMovies({ onSearch, ...props }) {
     lastSearch,
     handleSearch,
   } = useSearch({
-    lastSearchKey: "lastSearchFavorites",
+    lastSearchKey: false,
     pathname: pathname,
     sourceData: favoriteMoviesData,
+    initialDisplayData: favoriteMoviesData,
     initialMessage: {
-      message: "Поиск по ранее отмеченным фильмам",
-      src: arrowPath,
+      message: "У вас пока нет избранных фильмов",
+      src: iconPath,
     },
   });
 

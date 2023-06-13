@@ -40,6 +40,7 @@ function MoviesCardList({ movieList, ...props }) {
   }
 
   function renderMovies(toShow) {
+    if (!movieList) return
     return movieList.slice(0, toShow).map((movie) => {
       return (
         <li key={movie.id ? movie.id : movie._id}>

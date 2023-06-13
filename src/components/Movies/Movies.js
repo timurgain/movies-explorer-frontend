@@ -26,6 +26,7 @@ function Movies({ onSearch, ...props }) {
     lastSearchKey: "lastSearchMovie",
     pathname: pathname,
     sourceData: moviesData,
+    initialDisplayData: false,
     initialMessage: {
       message: "Введите ключевое слово в строке поиска фильмов, например, Бэнкси",
       src: arrowPath,

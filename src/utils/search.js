@@ -8,10 +8,6 @@ function stripQuery(query, isShortMovie) {
   return { strippedQuery, durationLimit };
 }
 
-function getQueryKey(pathname, query, durationLimit) {
-  return `${pathname},${query},${durationLimit.toString()}`;
-}
-
 function getFilteredMovies(sourceData, query, duration) {
   return sourceData.reduce((result, movie) => {
     const strippedName = movie.nameRU
@@ -37,26 +33,16 @@ function objToLocalStorage(key, object) {
  * @param {string} query
  * @param {boolean} isShortMovie
  * @param {Array} sourceData
- * @param {string} pathname
  * @returns {Array}
  */
 
-function getResult(query, isShortMovie, sourceData, pathname) {
+function getResult(query, isShortMovie, sourceData) {
   const { strippedQuery, durationLimit } = stripQuery(query, isShortMovie);
-  const key = getQueryKey(pathname, query, durationLimit);
-  let result;
-  if (key in localStorage) {
-    result = JSON.parse(localStorage.getItem(key));
-  } else {
-    result = getFilteredMovies(sourceData, strippedQuery, durationLimit);
-    objToLocalStorage(key, result);
-  }
-  return result;
+  return getFilteredMovies(sourceData, strippedQuery, durationLimit)
 }
 
 export {
   stripQuery,
-  getQueryKey,
   getFilteredMovies,
   objToLocalStorage,
   getResult,
