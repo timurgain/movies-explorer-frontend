@@ -2,11 +2,12 @@ const config = {
   backend: {
     movieUrl: "https://api.nomoreparties.co/beatfilm-movies",
     imageUrl: "https://api.nomoreparties.co",
-    mainUrl: "https://movie-tm.nomoredomains.monster/api"
+    mainUrl: "https://movie-tm.nomoredomains.monster/api",
   },
   regExp: {
-    punctuation: /[!"#$%&'()*+,\-./:;<=>?@\[\\\]^_`{|}~«»\s]/g,
+    punctuation: /[!"#$%&'()*+,\-./:;<=>?@\\[\\\]^_`{|}~«»\s]/g,
     userNamePattern: "[A-Za-zа-яА-Я \\-]{2,}",
+    emailPattern: "^[\\w.-]+@[a-zA-Z\\d_-]+?(?:\\.[a-zA-Z]{2,4})+$",
   },
   shortMovie: 40,
   pagination: {

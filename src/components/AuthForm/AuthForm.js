@@ -48,9 +48,14 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
           value={values.email}
           type="email"
           name="email"
+          pattern={config.regExp.emailPattern}
           required
         />
-        <span className="auth__error">{errors["email"]}</span>
+        <span className="auth__error">
+          {errors["email"]
+            ? "Enter email, keep in mind this pattern: example@mail.com"
+            : ""}
+        </span>
       </label>
 
       <label className="auth__field">
