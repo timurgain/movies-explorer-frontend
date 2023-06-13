@@ -154,8 +154,8 @@ function App() {
     mainApi
       .postUser(email, password, name)
       .then((user) => {
-        navigate("/signin", { replace: true });
         showTooltip("Регистрация прошла успешно!", "Здорово");
+        handleSubmitLogin({ email, password })
       })
       .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
   }
