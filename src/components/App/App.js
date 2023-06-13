@@ -150,17 +150,18 @@ function App() {
 
   // Use main API, register, auth
 
-  function handleSubmitRegister({ email, password, name }) {
+  function handleSubmitRegister({ email, password, name }, enableForm) {
     mainApi
       .postUser(email, password, name)
       .then((user) => {
         showTooltip("Регистрация прошла успешно!", "Здорово");
         handleSubmitLogin({ email, password })
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"))
+      .finally(enableForm);
   }
 
-  function handleSubmitLogin({ email, password }) {
+  function handleSubmitLogin({ email, password }, enableForm) {
     mainApi
       .login(email, password)
       .then(() => {
@@ -168,17 +169,19 @@ function App() {
         localStorage.setItem("loggedIn", true);
         navigate("/movies", { replace: true });
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"))
+      .finally(enableForm);
   }
 
-  function handleSubmitProfile({ name, email }) {
+  function handleSubmitProfile({ name, email }, enableForm) {
     mainApi
       .patchUserMe(name, email)
       .then((user) => {
         setCurrentUser(user);
         showTooltip("Данные обновили успешно!", "Здорово");
       })
-      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"));
+      .catch((err) => showTooltip(JSON.parse(err.message).message, "Понятно"))
+      .finally(enableForm);
   }
 
   function handleLogout() {

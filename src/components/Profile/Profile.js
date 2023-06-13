@@ -1,5 +1,6 @@
 import React from "react";
 import "./Profile.css";
+import config from "../../config";
 import Header from "../Header/Header";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
@@ -13,14 +14,16 @@ function Profile({ onSubmit, onLogout, ...props }) {
       false
     );
 
-  const [isDisabled, setIsDisabled] = React.useState(true);
+  const [disabledSubmit, setDisabledSubmit] = React.useState(true);
+  const [disabledForm, setDisabledForm] = React.useState(false);
+  React.useEffect(() => setDisabledForm(false), []);
 
   React.useEffect(() => {
     if (!isValid) {
-      setIsDisabled(true);
+      setDisabledSubmit(true);
       return;
     }
-    setIsDisabled(
+    setDisabledSubmit(
       !Object.keys(values).some((key) => values[key] !== currentUser[key])
     );
   }, [currentUser, values, isValid]);
@@ -31,7 +34,8 @@ function Profile({ onSubmit, onLogout, ...props }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit(values);
+    setDisabledForm(true);
+    onSubmit(values, () => setDisabledForm(false));
   }
 
   function handleLogout(evt) {
@@ -57,6 +61,7 @@ function Profile({ onSubmit, onLogout, ...props }) {
                 type="text"
                 name="name"
                 minLength={2}
+                disabled={disabledForm}
                 required
               />
               <span className="profile__error">{errors["name"]}</span>
@@ -70,15 +75,21 @@ function Profile({ onSubmit, onLogout, ...props }) {
                 value={values.email}
                 type="email"
                 name="email"
+                pattern={config.regExp.emailPattern}
+                disabled={disabledForm}
                 required
               />
-              <span className="profile__error">{errors["email"]}</span>
+              <span className="profile__error">
+                {errors["email"]
+                  ? "Enter email, keep in mind this pattern: example@mail.com"
+                  : ""}
+              </span>
             </label>
 
             <button
               className="profile__btn profile__btn_type_submit"
               type="submit"
-              disabled={isDisabled}
+              disabled={disabledForm || disabledSubmit}
             >
               Редактировать
             </button>

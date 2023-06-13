@@ -7,11 +7,15 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
   const { values, errors, isValid, handleChange, resetForm } =
     useFormAndValidation({}, {}, false);
 
+  const [disabledForm, setDisabledForm] = React.useState(false);
+  React.useEffect(() => setDisabledForm(false), []);
+
   React.useEffect(resetForm, [resetForm]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit(values);
+    setDisabledForm(true);
+    onSubmit(values, () => setDisabledForm(false));
   }
 
   return (
@@ -28,6 +32,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
             type="text"
             name="name"
             pattern={config.regExp.userNamePattern}
+            disabled={disabledForm}
             required
           />
           <span className="auth__error">
@@ -49,6 +54,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
           type="email"
           name="email"
           pattern={config.regExp.emailPattern}
+          disabled={disabledForm}
           required
         />
         <span className="auth__error">
@@ -69,6 +75,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
           type="password"
           name="password"
           minLength={4}
+          disabled={disabledForm}
           required
         />
         <span className="auth__error">{errors["password"]}</span>
@@ -77,7 +84,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
       <button
         className="auth__submit"
         type="submit"
-        disabled={isValid ? false : true}
+        disabled={!disabledForm && isValid ? false : true}
       >
         {submitText}
       </button>
