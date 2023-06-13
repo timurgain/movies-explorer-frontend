@@ -13,6 +13,18 @@ function Profile({ onSubmit, onLogout, ...props }) {
       false
     );
 
+  const [isDisabled, setIsDisabled] = React.useState(true);
+
+  React.useEffect(() => {
+    if (!isValid) {
+      setIsDisabled(true);
+      return;
+    }
+    setIsDisabled(
+      !Object.keys(values).some((key) => values[key] !== currentUser[key])
+    );
+  }, [currentUser, values, isValid]);
+
   React.useEffect(() => {
     setValues({ name: currentUser.name, email: currentUser.email });
   }, [currentUser, setValues]);
@@ -66,7 +78,7 @@ function Profile({ onSubmit, onLogout, ...props }) {
             <button
               className="profile__btn profile__btn_type_submit"
               type="submit"
-              disabled={isValid ? false : true}
+              disabled={isDisabled}
             >
               Редактировать
             </button>
