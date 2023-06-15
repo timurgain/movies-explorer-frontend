@@ -21,6 +21,10 @@ The application stores wide info about films that are saved as bookmarks. This r
 ---
 
 ## Links
+[Pull request, React and JS functionality](https://github.com/timurgain/movies-explorer-frontend/pull/7)
+
+[Movies Explorer app](https://movie-tm.nomoredomains.monster/)
+
 [Download the web-layout design file, Figma](https://disk.yandex.ru/d/9kdGe-IknVQiWw)
 
 

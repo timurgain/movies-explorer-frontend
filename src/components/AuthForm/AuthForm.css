@@ -62,12 +62,13 @@
   transition: opacity .2s linear;
 }
 
-.auth__submit:hover {
+.auth__submit:hover:not(:disabled) {
   opacity: .6;
 }
 
 .auth__submit:disabled {
   cursor:not-allowed;
+  background-color: rgba(255, 104, 56, .6);
 }
 
 .auth__submit:focus {

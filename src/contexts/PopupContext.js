@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react';
 
-const PopupContext = React.createContext();
+const PopupContex = React.createContext();
 
-export default PopupContext;
+export default PopupContex;

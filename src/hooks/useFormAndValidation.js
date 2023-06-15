@@ -1,5 +1,14 @@
 import React from "react";
 
+/**
+ * Manages input values and performs data validation
+ *
+ * @param {{}} initialValues
+ * @param {{}} initialErrors
+ * @param {boolean} initialIsValid
+ * @returns
+ */
+
 function useFormAndValidation(
   initialValues = {},
   initialErrors = {},

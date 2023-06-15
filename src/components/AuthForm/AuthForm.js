@@ -1,16 +1,21 @@
 import React from "react";
 import "./AuthForm.css";
+import config from "../../config";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
 function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
   const { values, errors, isValid, handleChange, resetForm } =
     useFormAndValidation({}, {}, false);
 
+  const [disabledForm, setDisabledForm] = React.useState(false);
+  React.useEffect(() => setDisabledForm(false), []);
+
   React.useEffect(resetForm, [resetForm]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit();
+    setDisabledForm(true);
+    onSubmit(values, () => setDisabledForm(false));
   }
 
   return (
@@ -26,10 +31,15 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
             value={values.name}
             type="text"
             name="name"
-            minLength={2}
+            pattern={config.regExp.userNamePattern}
+            disabled={disabledForm}
             required
           />
-          <span className="auth__error">{errors["name"]}</span>
+          <span className="auth__error">
+            {errors["name"]
+              ? "Minimum 2 characters. Use only Latin, Cyrillic, spaces, and hyphens."
+              : ""}
+          </span>
         </label>
       )}
 
@@ -43,9 +53,15 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
           value={values.email}
           type="email"
           name="email"
+          pattern={config.regExp.emailPattern}
+          disabled={disabledForm}
           required
         />
-        <span className="auth__error">{errors["email"]}</span>
+        <span className="auth__error">
+          {errors["email"]
+            ? "Enter email, keep in mind this pattern: example@mail.com"
+            : ""}
+        </span>
       </label>
 
       <label className="auth__field">
@@ -59,6 +75,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
           type="password"
           name="password"
           minLength={4}
+          disabled={disabledForm}
           required
         />
         <span className="auth__error">{errors["password"]}</span>
@@ -67,7 +84,7 @@ function AuthForm({ submitText, onSubmit, isNameField, ...props }) {
       <button
         className="auth__submit"
         type="submit"
-        disabled={isValid ? false : true}
+        disabled={!disabledForm && isValid ? false : true}
       >
         {submitText}
       </button>

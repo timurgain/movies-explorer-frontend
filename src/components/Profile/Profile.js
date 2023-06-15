@@ -1,17 +1,46 @@
 import React from "react";
 import "./Profile.css";
+import config from "../../config";
 import Header from "../Header/Header";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import useFormAndValidation from "../../hooks/useFormAndValidation";
 
-function Profile({onSubmit, ...props}) {
-  const currentUser = React.useContext(CurrentUserContext);
-  const { values, errors, isValid, handleChange, resetForm } =
-    useFormAndValidation({name: currentUser.name, email: currentUser.email}, {}, false);
+function Profile({ onSubmit, onLogout, ...props }) {
+  const { currentUser } = React.useContext(CurrentUserContext);
+  const { values, setValues, errors, isValid, handleChange } =
+    useFormAndValidation(
+      { name: currentUser.name, email: currentUser.email },
+      {},
+      false
+    );
+
+  const [disabledSubmit, setDisabledSubmit] = React.useState(true);
+  const [disabledForm, setDisabledForm] = React.useState(false);
+  React.useEffect(() => setDisabledForm(false), []);
+
+  React.useEffect(() => {
+    if (!isValid) {
+      setDisabledSubmit(true);
+      return;
+    }
+    setDisabledSubmit(
+      !Object.keys(values).some((key) => values[key] !== currentUser[key])
+    );
+  }, [currentUser, values, isValid]);
+
+  React.useEffect(() => {
+    setValues({ name: currentUser.name, email: currentUser.email });
+  }, [currentUser, setValues]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    onSubmit();
+    setDisabledForm(true);
+    onSubmit(values, () => setDisabledForm(false));
+  }
+
+  function handleLogout(evt) {
+    evt.preventDefault();
+    onLogout();
   }
 
   return (
@@ -32,6 +61,7 @@ function Profile({onSubmit, ...props}) {
                 type="text"
                 name="name"
                 minLength={2}
+                disabled={disabledForm}
                 required
               />
               <span className="profile__error">{errors["name"]}</span>
@@ -45,21 +75,30 @@ function Profile({onSubmit, ...props}) {
                 value={values.email}
                 type="email"
                 name="email"
+                pattern={config.regExp.emailPattern}
+                disabled={disabledForm}
                 required
               />
-              <span className="profile__error">{errors["email"]}</span>
+              <span className="profile__error">
+                {errors["email"]
+                  ? "Enter email, keep in mind this pattern: example@mail.com"
+                  : ""}
+              </span>
             </label>
 
             <button
               className="profile__btn profile__btn_type_submit"
               type="submit"
-              disabled={isValid ? false : true}
+              disabled={disabledForm || disabledSubmit}
             >
               Редактировать
             </button>
           </form>
 
-          <button className="profile__btn profile__btn_type_signout">
+          <button
+            className="profile__btn profile__btn_type_signout"
+            onClick={handleLogout}
+          >
             Выйти из аккаунта
           </button>
         </section>

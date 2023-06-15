@@ -1,32 +1,50 @@
 import React from "react";
 import "./MoviesCard.css";
+import config from "../../../config";
+import PopupContex from "../../../contexts/PopupContext";
 
-function MoviesCard({ movie, onClickHandler, pathname, ...props }) {
 
+function MoviesCard({ movie, onAdd, onRemove, pathname, isFavorite, ...props }) {
+  const { showVideo } = React.useContext(PopupContex);
 
-  const [isFavorite, setIsFavorite] = React.useState(false);
+  function getImageSrc() {
+    if (movie.image.url) return config.backend.imageUrl + movie.image.url
+    return movie.image
+  }
 
-  function handleClickFavorite() {
-    setIsFavorite(!isFavorite);
-    onClickHandler();
+  function handleClickAdd() {
+    onAdd(movie);
+  }
+
+  function handleClickRemove() {
+    onRemove(movie);
+  }
+
+  function handleClickCard() {
+    showVideo(movie.trailerLink, movie.nameRU)
   }
 
   return (
     <figure className="card">
-      <img className="card__image" src={movie.image} alt={movie.nameRU} />
+      <img
+        className="card__image"
+        src={getImageSrc()}
+        alt={movie.nameRU}
+        onClick={handleClickCard}
+      />
 
-      {pathname === '/movies' && !isFavorite && (
-        <button className="card__save-btn" onClick={handleClickFavorite}>
+      {pathname === "/movies" && !isFavorite && (
+        <button className="card__save-btn" onClick={handleClickAdd}>
           Сохранить
         </button>
       )}
 
-      {pathname === '/movies' && isFavorite && (
-        <button className="card__mark-btn" onClick={handleClickFavorite} />
+      {pathname === "/movies" && isFavorite && (
+        <button className="card__mark-btn" onClick={handleClickRemove} />
       )}
 
-      {pathname === '/saved-movies' && (
-        <button className="card__remove-btn" onClick={handleClickFavorite} />
+      {pathname === "/saved-movies" && (
+        <button className="card__remove-btn" onClick={handleClickRemove} />
       )}
 
       <figcaption className="card__caption">
